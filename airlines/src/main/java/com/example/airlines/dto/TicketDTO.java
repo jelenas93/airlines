@@ -12,6 +12,17 @@ public class TicketDTO {
 	public int numberOfTicket;
 
 	public Flight flight;
+	
+	public TicketDTO() {
+		super();
+	}
+
+	public TicketDTO(User user, int numberOfTicket, Flight flight) {
+		super();
+		this.user = user;
+		this.numberOfTicket = numberOfTicket;
+		this.flight = flight;
+	}
 
 	public User getUser() {
 		return user;

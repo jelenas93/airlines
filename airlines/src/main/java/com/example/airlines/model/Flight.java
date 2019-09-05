@@ -14,30 +14,46 @@ public class Flight {
 
 	@Id
 	public Long id;
-	
+
 	@OneToOne
 	@JoinColumn(name = "airplane", referencedColumnName = "id", nullable = false)
 	public Airplane airplane;
-	
+
 	@Column(nullable = false)
 	public int seatReserved;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "destination", referencedColumnName = "id", nullable = false)
 	public Destination destination;
-	
+
 	@OneToOne
 	@JoinColumn(name = "airCompany", referencedColumnName = "id", nullable = false)
 	public AirCompany airCompany;
-	
+
 	@Column(nullable = false)
 	public Date flightDate;
-	
+
 	@Column(nullable = false)
 	public Double price;
-	
+
 	@Column(nullable = false)
 	public boolean isActive;
+
+	public Flight() {
+		super();
+	}
+
+	public Flight(Airplane airplane, int seatReserved, Destination destination, AirCompany airCompany, Date flightDate,
+			Double price, boolean isActive) {
+		super();
+		this.airplane = airplane;
+		this.seatReserved = seatReserved;
+		this.destination = destination;
+		this.airCompany = airCompany;
+		this.flightDate = flightDate;
+		this.price = price;
+		this.isActive = isActive;
+	}
 
 	public Long getId() {
 		return id;
@@ -102,5 +118,5 @@ public class Flight {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
 }

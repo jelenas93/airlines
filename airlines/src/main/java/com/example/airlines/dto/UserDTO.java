@@ -11,6 +11,18 @@ public class UserDTO {
 	public String mail;
 
 	public boolean isActive;
+	
+	public UserDTO() {
+		super();
+	}
+	
+	public UserDTO(String username, String password, String mail, boolean isActive) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.mail = mail;
+		this.isActive = isActive;
+	}
 
 	public Long getId() {
 		return id;

@@ -23,6 +23,22 @@ public class FlightDTO {
 	public Double price;
 
 	public boolean isActive;
+	
+	public FlightDTO() {
+		super();
+	}
+
+	public FlightDTO(Airplane airplane, int seatReserved, Destination destination, AirCompany airCompany, Date flightDate,
+			Double price, boolean isActive) {
+		super();
+		this.airplane = airplane;
+		this.seatReserved = seatReserved;
+		this.destination = destination;
+		this.airCompany = airCompany;
+		this.flightDate = flightDate;
+		this.price = price;
+		this.isActive = isActive;
+	}
 
 	public Long getId() {
 		return id;

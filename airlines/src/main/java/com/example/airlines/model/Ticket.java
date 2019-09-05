@@ -22,6 +22,17 @@ public class Ticket {
 	@OneToOne
 	@JoinColumn(name = "flight", referencedColumnName = "id", nullable = false)
 	public Flight flight;
+	
+	public Ticket() {
+		super();
+	}
+
+	public Ticket(User user, int numberOfTicket, Flight flight) {
+		super();
+		this.user = user;
+		this.numberOfTicket = numberOfTicket;
+		this.flight = flight;
+	}
 
 	public User getUser() {
 		return user;

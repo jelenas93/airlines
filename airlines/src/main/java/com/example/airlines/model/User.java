@@ -21,6 +21,18 @@ public class User {
 	
 	@Column(nullable = false)
 	public boolean isActive;
+	
+	public User() {
+		super();
+	}
+	
+	public User(String username, String password, String mail, boolean isActive) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.mail = mail;
+		this.isActive = isActive;
+	}
 
 	public Long getId() {
 		return id;
@@ -61,7 +73,5 @@ public class User {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
-	
-	
+
 }

@@ -9,12 +9,22 @@ public class Supervizor {
 
 	@Id
 	public Long id;
-	
+
 	@Column(nullable = false, unique = true)
 	public String username;
-	
+
 	@Column(nullable = false)
 	public String password;
+
+	public Supervizor() {
+		super();
+	}
+
+	public Supervizor(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
 
 	public Long getId() {
 		return id;
@@ -39,6 +49,5 @@ public class Supervizor {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
 }

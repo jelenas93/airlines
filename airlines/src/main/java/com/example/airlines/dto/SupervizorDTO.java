@@ -7,6 +7,16 @@ public class SupervizorDTO {
 	public String username;
 
 	public String password;
+	
+	public SupervizorDTO() {
+		super();
+	}
+
+	public SupervizorDTO(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
 
 	public Long getId() {
 		return id;
