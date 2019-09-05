@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.example.airlines.model.Administrator;
 
 
-public interface AdministratorDAO extends CrudRepository<Server, Long> {
+public interface AdministratorDAO extends CrudRepository<Administrator, Long> {
 
 	
 
