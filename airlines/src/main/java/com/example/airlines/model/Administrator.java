@@ -16,7 +16,7 @@ public class Administrator {
 	public String username;
 	
 	@Column(nullable = false)
-	public String passwprd;
+	public String password;
 	
 	@ManyToOne
 	@JoinColumn(name="airCompany", referencedColumnName="id", nullable=false)
@@ -41,12 +41,12 @@ public class Administrator {
 		this.username = username;
 	}
 
-	public String getPasswprd() {
-		return passwprd;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPasswprd(String passwprd) {
-		this.passwprd = passwprd;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public AirCompany getAirCompany() {
