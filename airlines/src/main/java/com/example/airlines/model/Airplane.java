@@ -16,6 +16,16 @@ public class Airplane {
 	@Column(nullable = false)
 	public String brand;
 
+	public Airplane() {
+		super();
+	}
+
+	public Airplane(int seats, String brand) {
+		super();
+		this.seats = seats;
+		this.brand = brand;
+	}
+
 	public Long getId() {
 		return id;
 	}

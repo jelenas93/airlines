@@ -13,6 +13,15 @@ public class Destination {
 	@Column(nullable = false)
 	public String name;
 
+	public Destination() {
+		super();
+	}
+
+	public Destination(String name) {
+		super();
+		this.name = name;
+	}
+
 	public Long getId() {
 		return id;
 	}

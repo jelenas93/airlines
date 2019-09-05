@@ -5,7 +5,14 @@ public class DestinationDTO {
 	public Long id;
 
 	public String name;
+	public DestinationDTO() {
+		super();
+	}
 
+	public DestinationDTO(String name) {
+		super();
+		this.name = name;
+	}
 	public Long getId() {
 		return id;
 	}

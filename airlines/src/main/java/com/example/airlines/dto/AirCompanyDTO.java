@@ -7,7 +7,15 @@ public class AirCompanyDTO {
 	public String name;
 
 	public boolean isActive;
+	public AirCompanyDTO() {
+		super();
+	}
 
+	public AirCompanyDTO(String name, boolean isActive) {
+		super();
+		this.name = name;
+		this.isActive = isActive;
+	}
 	public Long getId() {
 		return id;
 	}

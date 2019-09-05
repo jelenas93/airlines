@@ -7,6 +7,15 @@ public class AirplaneDTO {
 	public int seats;
 
 	public String brand;
+	public AirplaneDTO() {
+		super();
+	}
+
+	public AirplaneDTO(int seats, String brand) {
+		super();
+		this.seats = seats;
+		this.brand = brand;
+	}
 
 	public Long getId() {
 		return id;

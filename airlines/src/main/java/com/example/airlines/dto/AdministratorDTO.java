@@ -8,7 +8,17 @@ public class AdministratorDTO {
 	public boolean isActive;
 	public Long id;
 	public String username;
-
+public AdministratorDTO() {
+		
+	}
+	
+	public AdministratorDTO(String username, String password, AirCompany airCompany, boolean isActive) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.airCompany = airCompany;
+		this.isActive = isActive;
+	}
 	public Long getId() {
 		return id;
 	}

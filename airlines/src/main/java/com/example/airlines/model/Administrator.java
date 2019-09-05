@@ -24,6 +24,17 @@ public class Administrator {
 	
 	@Column(nullable = false)
 	public boolean isActive;
+	public Administrator() {
+		
+	}
+	
+	public Administrator(String username, String password, AirCompany airCompany, boolean isActive) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.airCompany = airCompany;
+		this.isActive = isActive;
+	}
 
 	public Long getId() {
 		return id;
@@ -49,6 +60,7 @@ public class Administrator {
 		this.password = password;
 	}
 
+	
 	public AirCompany getAirCompany() {
 		return airCompany;
 	}

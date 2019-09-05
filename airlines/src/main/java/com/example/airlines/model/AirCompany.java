@@ -10,12 +10,22 @@ public class AirCompany {
 	@Id
 	public Long id;
 	
+	
+
 	@Column(nullable = false, unique = true)
 	public String name;
 	
 	@Column(nullable = false)
 	public boolean isActive;
+	public AirCompany() {
+		super();
+	}
 
+	public AirCompany(String name, boolean isActive) {
+		super();
+		this.name = name;
+		this.isActive = isActive;
+	}
 	public Long getId() {
 		return id;
 	}
