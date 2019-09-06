@@ -7,6 +7,7 @@ public class AirCompanyDTO {
 	public String name;
 
 	public boolean isActive;
+
 	public AirCompanyDTO() {
 		super();
 	}
@@ -16,6 +17,7 @@ public class AirCompanyDTO {
 		this.name = name;
 		this.isActive = isActive;
 	}
+
 	public Long getId() {
 		return id;
 	}

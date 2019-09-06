@@ -11,23 +11,24 @@ public class Administrator {
 
 	@Id
 	public Long id;
-	
-	@Column(nullable = false)
+
+	@Column(nullable = false, unique = true)
 	public String username;
-	
+
 	@Column(nullable = false)
 	public String password;
-	
+
 	@ManyToOne
-	@JoinColumn(name="airCompany", referencedColumnName="id", nullable=false)
+	@JoinColumn(name = "airCompany", referencedColumnName = "id", nullable = false)
 	public AirCompany airCompany;
-	
+
 	@Column(nullable = false)
 	public boolean isActive;
+
 	public Administrator() {
-		
+
 	}
-	
+
 	public Administrator(String username, String password, AirCompany airCompany, boolean isActive) {
 		super();
 		this.username = username;
@@ -60,7 +61,6 @@ public class Administrator {
 		this.password = password;
 	}
 
-	
 	public AirCompany getAirCompany() {
 		return airCompany;
 	}
@@ -76,5 +76,5 @@ public class Administrator {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
 }
