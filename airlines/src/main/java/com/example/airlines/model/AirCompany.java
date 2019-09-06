@@ -6,17 +6,16 @@ import javax.persistence.Id;
 
 @Entity
 public class AirCompany {
-	
+
 	@Id
-	public Long id;
-	
-	
+	private Long id;
 
 	@Column(nullable = false, unique = true)
-	public String name;
-	
+	private String name;
+
 	@Column(nullable = false)
-	public boolean isActive;
+	private boolean isActive;
+
 	public AirCompany() {
 		super();
 	}
@@ -26,6 +25,7 @@ public class AirCompany {
 		this.name = name;
 		this.isActive = isActive;
 	}
+
 	public Long getId() {
 		return id;
 	}
@@ -49,7 +49,5 @@ public class AirCompany {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
-	
 
 }

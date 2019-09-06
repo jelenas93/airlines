@@ -8,13 +8,13 @@ import javax.persistence.Id;
 public class Airplane {
 
 	@Id
-	public Long id;
+	private Long id;
 	
 	@Column(nullable = false)
-	public int seats;
+	private int seats;
 	
 	@Column(nullable = false)
-	public String brand;
+	private String brand;
 
 	public Airplane() {
 		super();

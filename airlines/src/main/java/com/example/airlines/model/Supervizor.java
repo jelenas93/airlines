@@ -8,13 +8,13 @@ import javax.persistence.Id;
 public class Supervizor {
 
 	@Id
-	public Long id;
+	private Long id;
 
 	@Column(nullable = false, unique = true)
-	public String username;
+	private String username;
 
 	@Column(nullable = false)
-	public String password;
+	private String password;
 
 	public Supervizor() {
 		super();

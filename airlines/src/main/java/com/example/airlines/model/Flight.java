@@ -13,31 +13,31 @@ import javax.persistence.OneToOne;
 public class Flight {
 
 	@Id
-	public Long id;
+	private Long id;
 
 	@OneToOne
 	@JoinColumn(name = "airplane", referencedColumnName = "id", nullable = false)
-	public Airplane airplane;
+	private Airplane airplane;
 
 	@Column(nullable = false)
-	public int seatReserved;
+	private int seatReserved;
 
 	@ManyToOne
 	@JoinColumn(name = "destination", referencedColumnName = "id", nullable = false)
-	public Destination destination;
+	private Destination destination;
 
 	@OneToOne
 	@JoinColumn(name = "airCompany", referencedColumnName = "id", nullable = false)
-	public AirCompany airCompany;
+	private AirCompany airCompany;
 
 	@Column(nullable = false)
-	public Date flightDate;
+	private Date flightDate;
 
 	@Column(nullable = false)
-	public Double price;
+	private Double price;
 
 	@Column(nullable = false)
-	public boolean isActive;
+	private boolean isActive;
 
 	public Flight() {
 		super();

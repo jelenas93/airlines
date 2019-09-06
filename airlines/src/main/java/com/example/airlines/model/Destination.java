@@ -8,10 +8,10 @@ import javax.persistence.Id;
 public class Destination {
 
 	@Id
-	public Long id;
+	private Long id;
 	
 	@Column(nullable = false)
-	public String name;
+	private String name;
 
 	public Destination() {
 		super();

@@ -10,18 +10,18 @@ import javax.persistence.OneToOne;
 public class Ticket {
 
 	@Id
-	public Long id;
+	private Long id;
 	
 	@OneToOne
 	@JoinColumn(name = "user", referencedColumnName = "id", nullable = false)
-	public User user;
+	private User user;
 	
 	@Column(nullable = false)
-	public int numberOfTicket;
+	private int numberOfTicket;
 	
 	@OneToOne
 	@JoinColumn(name = "flight", referencedColumnName = "id", nullable = false)
-	public Flight flight;
+	private Flight flight;
 	
 	public Ticket() {
 		super();

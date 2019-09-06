@@ -10,20 +10,20 @@ import javax.persistence.ManyToOne;
 public class Administrator {
 
 	@Id
-	public Long id;
+	private Long id;
 
 	@Column(nullable = false, unique = true)
-	public String username;
+	private String username;
 
 	@Column(nullable = false)
-	public String password;
+	private String password;
 
 	@ManyToOne
 	@JoinColumn(name = "airCompany", referencedColumnName = "id", nullable = false)
-	public AirCompany airCompany;
+	private AirCompany airCompany;
 
 	@Column(nullable = false)
-	public boolean isActive;
+	private boolean isActive;
 
 	public Administrator() {
 
