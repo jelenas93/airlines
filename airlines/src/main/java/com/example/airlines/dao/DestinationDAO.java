@@ -8,5 +8,5 @@ import com.example.airlines.model.Destination;
 
 public interface DestinationDAO extends CrudRepository<Destination, Long> {
 
-	public ArrayList<Destination> findAllByName(String name);
+	public Destination findOneByName(String name);
 }

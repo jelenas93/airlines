@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface AirplaneDAO extends CrudRepository<Airplane, Long>{
 	
 	public ArrayList<Airplane> findAllByBrand(String brand);
-	public ArrayList<Airplane> findAllBySeats(String seats);
+	
 	
 }
 
