@@ -17,7 +17,7 @@ import com.example.airlines.model.Flight;
 import com.example.airlines.service.FlightService;
 
 @Service
-public abstract class FlightServiceImpl implements FlightService {
+public class FlightServiceImpl implements FlightService {
 
 	@Autowired
 	FlightDAO flightDAO;

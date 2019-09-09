@@ -10,7 +10,7 @@ import com.example.airlines.model.User;
 import com.example.airlines.service.UserService;
 
 @Service
-public abstract class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDAO userDAO;
