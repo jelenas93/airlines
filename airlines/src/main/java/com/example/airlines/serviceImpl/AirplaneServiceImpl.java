@@ -11,7 +11,7 @@ import com.example.airlines.model.AirCompany;
 import com.example.airlines.model.Airplane;
 import com.example.airlines.service.AirplaneService;
 @Service
-public abstract class AirplaneServiceImpl implements AirplaneService{
+public class AirplaneServiceImpl implements AirplaneService{
 	@Autowired
 	AirplaneDAO airplaneDAO;
 	@Override
