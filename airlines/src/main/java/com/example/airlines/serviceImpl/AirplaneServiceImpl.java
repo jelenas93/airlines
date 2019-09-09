@@ -3,13 +3,14 @@ package com.example.airlines.serviceImpl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AirplaneDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.model.AirCompany;
 import com.example.airlines.model.Airplane;
 import com.example.airlines.service.AirplaneService;
-
+@Service
 public abstract class AirplaneServiceImpl implements AirplaneService{
 	@Autowired
 	AirplaneDAO airplaneDAO;
