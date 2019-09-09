@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AirCompanyDAO;
 import com.example.airlines.dao.AirplaneDAO;
@@ -15,6 +16,7 @@ import com.example.airlines.model.Destination;
 import com.example.airlines.model.Flight;
 import com.example.airlines.service.FlightService;
 
+@Service
 public abstract class FlightServiceImpl implements FlightService {
 
 	@Autowired
@@ -61,9 +63,15 @@ public abstract class FlightServiceImpl implements FlightService {
 		if (flight.get() != null) {
 			return "Greska, vec postoji dati let.";
 		}
-		Flight fl=new Flight(recObj.getAirplane(), recObj.getSeatReserved(), recObj.getDestination(),
+		Flight fl = new Flight(recObj.getAirplane(), recObj.getSeatReserved(), recObj.getDestination(),
 				recObj.getAirCompany(), recObj.getFlightDate(), recObj.getPrice(), true);
-		flightDAO.save(fl);
+		try {
+			flightDAO.save(fl);
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Flight Controller POST (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Flight Controller POST (ex2), contact admins!";
+		}
 		return "OK, uspjesno ste unijeli let.";
 
 	}
@@ -75,16 +83,16 @@ public abstract class FlightServiceImpl implements FlightService {
 				|| "".equals(recObj.getPrice() + "")) {
 			return "Greska, niste unijeli sve podatke.";
 		}
-		Optional<Airplane> airplane=airplaneDAO.findById(recObj.getAirplane().getId());
-		if(airplane.get()==null) {
+		Optional<Airplane> airplane = airplaneDAO.findById(recObj.getAirplane().getId());
+		if (airplane.get() == null) {
 			return "Greska, ne postoji avion sa unesenim podacima.";
 		}
-		Destination destination=destinationDAO.findOneByName(recObj.getDestination().getName());
-		if(destination == null) {
+		Destination destination = destinationDAO.findOneByName(recObj.getDestination().getName());
+		if (destination == null) {
 			return "Greska, ne postoji destinacija sa datim imenom.";
 		}
-		AirCompany airCompany=airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
-		if(airCompany==null) {
+		AirCompany airCompany = airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
+		if (airCompany == null) {
 			return "Greska, ne postoji avio kompanija sa datim imenom.";
 		}
 		Optional<Flight> flight = flightDAO.findById(recObj.getId());
@@ -97,8 +105,13 @@ public abstract class FlightServiceImpl implements FlightService {
 		flight.get().setAirCompany(airCompany);
 		flight.get().setFlightDate(recObj.getFlightDate());
 		flight.get().setPrice(recObj.getPrice());
-		
-		flightDAO.save(flight.get());
+		try {
+			flightDAO.save(flight.get());
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Flight Controller POST (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Flight Controller POST (ex2), contact admins!";
+		}
 		return "OK, uspjesno ste unijeli let.";
 	}
 

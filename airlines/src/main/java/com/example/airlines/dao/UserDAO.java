@@ -6,8 +6,8 @@ import com.example.airlines.model.User;
 
 public interface UserDAO extends CrudRepository<User, Long>{
 	
-	public User findOneByName(String name);
+	public User findOneByUsername(String name);
 	
-	public User findOneByNameAndPassword(String name, String password);
+	//public User findOneByUsernameAndPassword(String name, String password);
 
 }
