@@ -8,21 +8,21 @@ import com.example.airlines.model.Destination;
 
 public class FlightDTO {
 
-	public Long id;
+	private Long id;
 
-	public Airplane airplane;
+	private Airplane airplane;
 
-	public int seatReserved;
+	private int seatReserved;
 
-	public Destination destination;
+	private Destination destination;
 
-	public AirCompany airCompany;
+	private AirCompany airCompany;
 
-	public Date flightDate;
+	private Date flightDate;
 
-	public Double price;
+	private Double price;
 
-	public boolean isActive;
+	private boolean isActive;
 	
 	public FlightDTO() {
 		super();

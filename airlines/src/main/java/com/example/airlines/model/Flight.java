@@ -18,7 +18,7 @@ public class Flight {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "airplane", referencedColumnName = "id", nullable = false)
 	private Airplane airplane;
 
@@ -29,7 +29,7 @@ public class Flight {
 	@JoinColumn(name = "destination", referencedColumnName = "id", nullable = false)
 	private Destination destination;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "airCompany", referencedColumnName = "id", nullable = false)
 	private AirCompany airCompany;
 

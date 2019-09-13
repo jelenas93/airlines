@@ -3,15 +3,21 @@ package com.example.airlines.dto;
 import com.example.airlines.model.AirCompany;
 
 public class AdministratorDTO {
-	public String password;
-	public AirCompany airCompany;
-	public boolean isActive;
-	public Long id;
-	public String username;
-public AdministratorDTO() {
-		
+
+	private Long id;
+
+	private String username;
+
+	private String password;
+
+	private AirCompany airCompany;
+
+	private boolean isActive;
+
+	public AdministratorDTO() {
+
 	}
-	
+
 	public AdministratorDTO(String username, String password, AirCompany airCompany, boolean isActive) {
 		super();
 		this.username = username;
@@ -19,6 +25,7 @@ public AdministratorDTO() {
 		this.airCompany = airCompany;
 		this.isActive = isActive;
 	}
+
 	public Long getId() {
 		return id;
 	}

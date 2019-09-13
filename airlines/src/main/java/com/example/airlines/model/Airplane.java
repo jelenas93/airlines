@@ -19,14 +19,26 @@ public class Airplane {
 	@Column(nullable = false)
 	private String brand;
 
+	@Column
+	private boolean isActive;
+	
 	public Airplane() {
 		super();
 	}
 
-	public Airplane(int seats, String brand) {
+	public Airplane(int seats, String brand, boolean isActive) {
 		super();
 		this.seats = seats;
 		this.brand = brand;
+		this.isActive=isActive;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public Long getId() {

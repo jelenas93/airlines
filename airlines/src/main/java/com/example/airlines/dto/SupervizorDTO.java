@@ -2,11 +2,11 @@ package com.example.airlines.dto;
 
 public class SupervizorDTO {
 
-	public Long id;
+	private Long id;
 
-	public String username;
+	private String username;
 
-	public String password;
+	private String password;
 	
 	public SupervizorDTO() {
 		super();

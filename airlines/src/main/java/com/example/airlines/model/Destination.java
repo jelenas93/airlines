@@ -15,14 +15,18 @@ public class Destination {
 	
 	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false)
+	private boolean isActive;
 
 	public Destination() {
 		super();
 	}
 
-	public Destination(String name) {
+	public Destination(String name, boolean isActive) {
 		super();
 		this.name = name;
+		this.isActive=isActive;
 	}
 
 	public Long getId() {
@@ -39,6 +43,14 @@ public class Destination {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	

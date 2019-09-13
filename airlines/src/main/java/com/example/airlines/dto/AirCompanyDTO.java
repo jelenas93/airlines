@@ -2,11 +2,11 @@ package com.example.airlines.dto;
 
 public class AirCompanyDTO {
 
-	public Long id;
+	private Long id;
 
-	public String name;
+	private String name;
 
-	public boolean isActive;
+	private boolean isActive;
 
 	public AirCompanyDTO() {
 		super();

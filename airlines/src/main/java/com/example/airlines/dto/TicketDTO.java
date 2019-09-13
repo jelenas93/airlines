@@ -5,13 +5,13 @@ import com.example.airlines.model.User;
 
 public class TicketDTO {
 
-	public Long id;
+	private Long id;
 
-	public User user;
+	private User user;
 
-	public int numberOfTicket;
+	private int numberOfTicket;
 
-	public Flight flight;
+	private Flight flight;
 	
 	public TicketDTO() {
 		super();

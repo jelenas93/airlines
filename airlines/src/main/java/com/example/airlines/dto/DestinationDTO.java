@@ -2,16 +2,20 @@ package com.example.airlines.dto;
 
 public class DestinationDTO {
 
-	public Long id;
+	private Long id;
 
-	public String name;
+	private String name;
+	
+	private boolean isActive;
+	
 	public DestinationDTO() {
 		super();
 	}
 
-	public DestinationDTO(String name) {
+	public DestinationDTO(String name, boolean isAvtive) {
 		super();
 		this.name = name;
+		this.isActive=isActive;
 	}
 	public Long getId() {
 		return id;
@@ -27,6 +31,14 @@ public class DestinationDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

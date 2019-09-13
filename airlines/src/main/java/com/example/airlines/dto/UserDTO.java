@@ -2,15 +2,15 @@ package com.example.airlines.dto;
 
 public class UserDTO {
 
-	public Long id;
+	private Long id;
 
-	public String username;
+	private String username;
 
-	public String password;
+	private String password;
 
-	public String mail;
+	private String mail;
 
-	public boolean isActive;
+	private boolean isActive;
 	
 	public UserDTO() {
 		super();
