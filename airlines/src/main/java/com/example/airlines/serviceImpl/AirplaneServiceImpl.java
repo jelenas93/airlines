@@ -37,7 +37,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 		}
 	
 
-		Airplane airplane = new Airplane( object.getSeats(), object.getBrand());
+		Airplane airplane = new Airplane( object.getSeats(), object.getBrand(), object.isActive());
 
 		try {
 			airplaneDAO.save(airplane);

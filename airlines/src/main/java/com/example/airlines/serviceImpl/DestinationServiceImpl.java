@@ -38,7 +38,7 @@ public class DestinationServiceImpl  implements DestinationService{
 			return "Greska, destinacija sa datim imenom vec postoji.";
 		}
 
-		destination = new Destination(object.getName());
+		destination = new Destination(object.getName(), object.isActive());
 
 		try {
 			destinationDAO.save(destination);
