@@ -21,7 +21,7 @@ import com.example.airlines.model.Destination;
 import com.example.airlines.service.DestinationService;
 
 @RestController
-@RequestMapping("/api/administrator")
+@RequestMapping("/api/destination")
 public class DestinationController {
 
 	@Autowired
@@ -30,18 +30,18 @@ public class DestinationController {
 	DestinationService destinationService;
 	
 
-	@GetMapping(produces = "aplication/json")
-	public ResponseEntity<ArrayList<Destination>> getAll(HttpServletRequest request) {
+	@GetMapping(path="/all", produces = "application/json")
+	public ResponseEntity<ArrayList<Destination>> getAll() {
 		return new ResponseEntity<ArrayList<Destination>>(destinationService.getAll(), HttpStatus.OK);
 	}
 	
 	
-	@GetMapping(value="/{name}", produces="aplication/json")
+	@GetMapping(value="/{name}", produces="application/json")
 	public ResponseEntity<Destination> getOne(@PathVariable("name") String username, HttpRequest request){
 		
 		return new ResponseEntity<Destination>(destinationService.getOne(username), HttpStatus.OK);
 	}
-	@PostMapping(headers="content-type=aplication/json")
+	@PostMapping(headers="content-type=application/json")
 	public ResponseEntity<String> save(@RequestBody Destination admin, HttpServletRequest request){
 		String recStr = destinationService.save(admin);
 		if (recStr.contains("Fail")) {

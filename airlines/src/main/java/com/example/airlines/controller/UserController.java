@@ -29,17 +29,17 @@ public class UserController {
 	@Autowired
 	public UserService userService;
 
-	@GetMapping(produces = "aplication/json")
+	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAll(HttpServletRequest request) {
 		return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{username}", produces = "aplication/json")
+	@GetMapping(value = "/{username}", produces = "application/json")
 	public ResponseEntity<User> getOne(@PathVariable("username") String name, HttpServletRequest request) {
 		return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
 	}
 
-	@PostMapping(headers = "content-type=aplication/json")
+	@PostMapping(headers = "content-type=application/json")
 	public ResponseEntity<String> save(@RequestBody User user, HttpServletRequest request) {
 		String response = userService.save(user);
 		if (response.contains("Greska")) {
@@ -61,4 +61,5 @@ public class UserController {
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}
+	
 }
