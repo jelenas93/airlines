@@ -34,7 +34,7 @@ public class UserController {
 		return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{username}", produces = "application/json")
+	@GetMapping(value = "/{username}", produces="aplication/json")
 	public ResponseEntity<User> getOne(@PathVariable("username") String name, HttpServletRequest request) {
 		return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
 	}
