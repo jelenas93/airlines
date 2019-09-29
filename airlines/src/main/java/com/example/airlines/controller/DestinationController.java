@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class DestinationController {
 	DestinationService destinationService;
 	
 
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping( produces = "application/json")
 	public ResponseEntity<ArrayList<Destination>> getAll() {
 		return new ResponseEntity<ArrayList<Destination>>(destinationService.getAll(), HttpStatus.OK);
 	}
@@ -41,9 +42,9 @@ public class DestinationController {
 		
 		return new ResponseEntity<Destination>(destinationService.getOne(username), HttpStatus.OK);
 	}
-	@PostMapping(headers="content-type=application/json")
-	public ResponseEntity<String> save(@RequestBody Destination admin, HttpServletRequest request){
-		String recStr = destinationService.save(admin);
+	@PostMapping(path="/save",produces="application/json")
+	public ResponseEntity<String> save(@RequestBody Destination destination, HttpServletRequest request){
+		String recStr = destinationService.save(destination);
 		if (recStr.contains("Fail")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -53,9 +54,20 @@ public class DestinationController {
 		}
 	}
 	
-	@PutMapping(headers = { "content-type=application/json" })
-	public ResponseEntity<String> edit(@RequestBody Destination admin, HttpServletRequest request) {
-		String recStr = destinationService.edit(admin);
+	@PutMapping(path="/edit",produces="application/json")
+	public ResponseEntity<String> edit(@RequestBody Destination destination, HttpServletRequest request) {
+		String recStr = destinationService.edit(destination);
+		if (recStr.contains("Fail")) {
+			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
+		} else if (recStr.contains("Exception")) {
+			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
+		} else {
+			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
+		}
+	}
+	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
+	public ResponseEntity<String> flagNotActive(@PathVariable("name") String name, HttpServletRequest request) {
+		String recStr = destinationService.notActive(name);
 		if (recStr.contains("Fail")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {

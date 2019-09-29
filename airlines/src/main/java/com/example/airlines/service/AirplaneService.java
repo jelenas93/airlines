@@ -13,5 +13,5 @@ public interface AirplaneService {
 	public String save(Airplane recObj);
 
 	public String edit(Airplane recObj);
-	
+	public String notActive(Long id);
 }

@@ -74,5 +74,28 @@ public class DestinationServiceImpl  implements DestinationService{
 		}
 		return "OK, uspjesno sacuvano!";
 	}
+	@Override
+	public String notActive(String name) {
+		// TODO Auto-generated method stub
+		Destination destination = destinationDAO.findOneByName(name);
+		if (name == null || name.equals("")) {
+			return "Greska, podaci nisu uneseni.";
+		}
+		if (destinationDAO == null) {
+			return "Greska, destinacija ne postoji.";
+		}
+		destination.setActive(false);
 
+		try {
+			destinationDAO.save(destination);
+		} catch (IllegalArgumentException ex1) {
+		//	log.error("[User Controller exception in DELETE: ]", ex1);
+			return "Exception in Destination Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+		//	log.error("[User Controller exception in DELETE: ]", ex2);
+			return "Exception in Destination Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, uspjesno suspendovan!";
+	}
 }

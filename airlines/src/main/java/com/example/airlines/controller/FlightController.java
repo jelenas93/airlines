@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.airlines.dao.FlightDAO;
 import com.example.airlines.model.Flight;
-import com.example.airlines.model.User;
 import com.example.airlines.service.FlightService;
 
 @RestController
@@ -29,17 +28,17 @@ public class FlightController {
 	@Autowired
 	FlightService flightService;
 	
-	@GetMapping(value ="/id", produces="application-json")
+	@GetMapping(value ="/{id}", produces="application/json")
 	public ResponseEntity<Flight> get(@PathVariable("id") Long id, HttpServletRequest request){
 		return new ResponseEntity<Flight>(flightService.get(id),HttpStatus.OK);
 	}
 	
-	@GetMapping(produces="application-json")
+	@GetMapping(produces="application/json")
 	public ResponseEntity<ArrayList<Flight>> getAll(HttpServletRequest request){
 		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(),HttpStatus.OK);
 	}
 	
-	@PostMapping(headers = "content-type=application/json")
+	@PostMapping(path="/save",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody Flight flight, HttpServletRequest request) {
 		String response = flightService.save(flight);
 		if (response.contains("Greska")) {
@@ -50,7 +49,7 @@ public class FlightController {
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping(headers = "content-type=application/json")
+	@PostMapping(path="/edit",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody Flight flight, HttpServletRequest request) {
 		String response = flightService.edit(flight);
 		if (response.contains("Greska")) {
@@ -61,7 +60,7 @@ public class FlightController {
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping(value="/id", headers = "content-type=application/json")
+	@PostMapping( value="/{id}", produces="application/json")
 	public ResponseEntity<String> notActive(@PathVariable("id") Long id, HttpServletRequest request) {
 		String response = flightService.notActive(id);
 		if (response.contains("Greska")) {

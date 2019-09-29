@@ -76,5 +76,28 @@ public class AirplaneServiceImpl implements AirplaneService{
 		}
 		return "OK, uspjesno sacuvano!";
 	}
+	@Override
+	public String notActive(Long id) {
+		// TODO Auto-generated method stub
+		Airplane airplane = (airplaneDAO.findById(id)).get();
+		if (id<0) {
+			return "Greska, podaci nisu uneseni.";
+		}
+		if (airplane == null) {
+			return "Greska, avion ne postoji.";
+		}
+		airplane.setActive(false);
 
+		try {
+			airplaneDAO.save(airplane);
+		} catch (IllegalArgumentException ex1) {
+		//	log.error("[User Controller exception in DELETE: ]", ex1);
+			return "Exception in Airplane Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+		//	log.error("[User Controller exception in DELETE: ]", ex2);
+			return "Exception in Airplane Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, uspjesno suspendovan!";
+	}
 }

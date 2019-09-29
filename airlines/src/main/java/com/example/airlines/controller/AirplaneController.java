@@ -1,5 +1,4 @@
 package com.example.airlines.controller;
-
 import java.net.http.HttpRequest;
 import java.util.ArrayList;
 
@@ -7,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,34 +16,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.airlines.dao.AdministratorDAO;
-import com.example.airlines.model.Administrator;
-import com.example.airlines.service.AdministratorService;
+
+import com.example.airlines.dao.AirplaneDAO;
+import com.example.airlines.model.Airplane;
+import com.example.airlines.service.AirplaneService;
 
 
 @RestController
-@RequestMapping("/api/administrator")
-public class AdministratorController {
+@RequestMapping("/api/airplane")
+public class AirplaneController {
+
 
 	@Autowired
-	AdministratorDAO adminDAO;
+	AirplaneDAO airplaneDAO;
 	@Autowired
-	AdministratorService adminService;
+	AirplaneService airplaneService;
+	
 
-	@GetMapping(produces = "application/json")
-	public ResponseEntity<ArrayList<Administrator>> getAll(HttpServletRequest request) {
-		return new ResponseEntity<ArrayList<Administrator>>(adminService.getAll(), HttpStatus.OK);
+	@GetMapping( produces = "application/json")
+	public ResponseEntity<ArrayList<Airplane>> getAll() {
+		return new ResponseEntity<ArrayList<Airplane>>(airplaneService.getAll(), HttpStatus.OK);
 	}
 	
 	
-	@GetMapping(value="/{username}", produces="application/json")
-	public ResponseEntity<Administrator> getOne(@PathVariable("username") String username, HttpRequest request){
+	@GetMapping(value="/{id}", produces="application/json")
+	public ResponseEntity<Airplane> getOne(@PathVariable("id") Long id, HttpRequest request){
 		
-		return new ResponseEntity<Administrator>(adminService.getOne(username), HttpStatus.OK);
+		return new ResponseEntity<Airplane>(airplaneService.getOneById(id), HttpStatus.OK);
 	}
 	@PostMapping(path="/save",produces="application/json")
-	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request){
-		String recStr = adminService.save(admin);
+	public ResponseEntity<String> save(@RequestBody Airplane airplane, HttpServletRequest request){
+		String recStr = airplaneService.save(airplane);
 		if (recStr.contains("Fail")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -56,8 +57,8 @@ public class AdministratorController {
 	}
 	
 	@PutMapping(path="/edit",produces="application/json")
-	public ResponseEntity<String> edit(@RequestBody Administrator admin, HttpServletRequest request) {
-		String recStr = adminService.edit(admin);
+	public ResponseEntity<String> edit(@RequestBody Airplane airplane, HttpServletRequest request) {
+		String recStr = airplaneService.edit(airplane);
 		if (recStr.contains("Fail")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -66,10 +67,9 @@ public class AdministratorController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
-	@DeleteMapping( value = "/{username}",produces="application/json")
-	public ResponseEntity<String> flagNotActive(@PathVariable("username") String username, HttpServletRequest request) {
-		String recStr = adminService.notActive(username);
+	@DeleteMapping(value = "/{id}", headers = { "content-type=application/json" })
+	public ResponseEntity<String> flagNotActive(@PathVariable("id") Long id, HttpServletRequest request) {
+		String recStr = airplaneService.notActive(id);
 		if (recStr.contains("Fail")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {

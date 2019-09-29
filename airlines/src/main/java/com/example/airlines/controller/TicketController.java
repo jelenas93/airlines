@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.airlines.dao.TicketDAO;
 import com.example.airlines.dto.TicketDTO;
 import com.example.airlines.model.Ticket;
-import com.example.airlines.model.User;
 import com.example.airlines.service.TicketService;
 
 @RestController
@@ -35,7 +34,7 @@ public class TicketController {
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
 	}
 
-	@PostMapping(headers = "content-type=application/json")
+	@PostMapping(path="/save",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody TicketDTO ticket, HttpServletRequest request){
 		String response=ticketService.save(ticket);
 		if (response.contains("Greska")) {
