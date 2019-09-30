@@ -37,24 +37,27 @@ public class TicketServiceImpl implements TicketService {
 		if (recObj.getFlight() == null || recObj.getUser() == null || "".equals(recObj.getNumberOfTicket() + "")) {
 			return "Greska, nisu uneseni svi podaci.";
 		}
-		Optional<Flight> flight = flightDAO.findById(recObj.getFlight().getId());
+		Flight flight = (flightDAO.findById(recObj.getFlight().getId())).get();
+		System.out.println("Id leta jee     "+flight.getId());
 		User user = userDAO.findOneByUsername(recObj.getUser().getUsername());
-		if (flight == null || user == null)
+		System.out.println("Id korinskika jee     "+user.getId());
+		if (flight == null)
 			return "Greska, ne postoji dati let.";
-		int ukupnoMjesta = recObj.getNumberOfTicket() + flight.get().getSeatReserved();
-		if (ukupnoMjesta > flight.get().getAirplane().getSeats())
+		if(user == null)
+			return "Greska, ne postoji korisnik sa korisnickim imenom : "+user.getUsername();
+		int ukupnoMjesta = recObj.getNumberOfTicket() + flight.getSeatReserved();
+		if (ukupnoMjesta > flight.getAirplane().getSeats())
 			return "Greska, nema dovoljno mjesta.";
-		flight.get().setSeatReserved(ukupnoMjesta);
-		// try {
-		flightDAO.save(flight.get());
-		/*
-		 * } catch (IllegalArgumentException ex1) { return
-		 * "Exception in Flight Controller POST (ex1), contact admins!"; } catch
-		 * (Exception ex2) { return
-		 * "Exception in Flight Controller POST (ex2), contact admins!"; }
-		 */
+		flight.setSeatReserved(ukupnoMjesta-recObj.getNumberOfTicket());
+		try {
+			flightDAO.save(flight);
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Ticket Controller POST (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Ticket Controller POST (ex2), contact admins!";
+		}
 
-		Ticket ticket = new Ticket(user, recObj.getNumberOfTicket(), flight.get());
+		Ticket ticket = new Ticket(user, recObj.getNumberOfTicket(), flight);
 		try {
 			ticketDAO.save(ticket);
 		} catch (IllegalArgumentException ex1) {

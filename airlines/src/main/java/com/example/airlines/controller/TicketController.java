@@ -38,7 +38,7 @@ public class TicketController {
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
 	}
 
-	@PostMapping(path="/save",produces="application/json")
+	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody TicketDTO ticket, HttpServletRequest request){
 		String response=ticketService.save(ticket);
 		if (response.contains("Greska")) {

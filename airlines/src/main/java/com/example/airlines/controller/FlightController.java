@@ -39,7 +39,7 @@ public class FlightController {
 		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(),HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/save",produces="application/json")
+	@PostMapping( headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Flight flight, HttpServletRequest request) {
 		String response = flightService.save(flight);
 		if (response.contains("Greska")) {
