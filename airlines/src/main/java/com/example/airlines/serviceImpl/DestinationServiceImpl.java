@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.DestinationDAO;
-import com.example.airlines.model.Administrator;
-import com.example.airlines.model.AirCompany;
 import com.example.airlines.model.Destination;
 import com.example.airlines.service.DestinationService;
 @Service
@@ -78,10 +76,11 @@ public class DestinationServiceImpl  implements DestinationService{
 	public String notActive(String name) {
 		// TODO Auto-generated method stub
 		Destination destination = destinationDAO.findOneByName(name);
+		
 		if (name == null || name.equals("")) {
 			return "Greska, podaci nisu uneseni.";
 		}
-		if (destinationDAO == null) {
+		if (destination == null) {
 			return "Greska, destinacija ne postoji.";
 		}
 		destination.setActive(false);

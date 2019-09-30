@@ -80,6 +80,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 	public String notActive(Long id) {
 		// TODO Auto-generated method stub
 		Airplane airplane = (airplaneDAO.findById(id)).get();
+		
 		if (id<0) {
 			return "Greska, podaci nisu uneseni.";
 		}

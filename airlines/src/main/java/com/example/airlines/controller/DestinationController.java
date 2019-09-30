@@ -65,6 +65,8 @@ public class DestinationController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
+	
+	
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("name") String name, HttpServletRequest request) {
 		String recStr = destinationService.notActive(name);

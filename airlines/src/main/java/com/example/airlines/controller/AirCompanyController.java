@@ -80,5 +80,5 @@ public class AirCompanyController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
+
 }
