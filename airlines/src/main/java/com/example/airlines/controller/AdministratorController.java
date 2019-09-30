@@ -46,7 +46,7 @@ public class AdministratorController {
 	@PostMapping(path="/save",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request){
 		String recStr = adminService.save(admin);
-		if (recStr.contains("Fail")) {
+		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,7 +58,7 @@ public class AdministratorController {
 	@PutMapping(path="/edit",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody Administrator admin, HttpServletRequest request) {
 		String recStr = adminService.edit(admin);
-		if (recStr.contains("Fail")) {
+		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -70,7 +70,7 @@ public class AdministratorController {
 	@DeleteMapping( value = "/{username}",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@PathVariable("username") String username, HttpServletRequest request) {
 		String recStr = adminService.notActive(username);
-		if (recStr.contains("Fail")) {
+		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);

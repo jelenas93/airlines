@@ -47,7 +47,7 @@ public class AirplaneController {
 	@PostMapping(path="/save",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody Airplane airplane, HttpServletRequest request){
 		String recStr = airplaneService.save(airplane);
-		if (recStr.contains("Fail")) {
+		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,7 +59,7 @@ public class AirplaneController {
 	@PutMapping(path="/edit",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody Airplane airplane, HttpServletRequest request) {
 		String recStr = airplaneService.edit(airplane);
-		if (recStr.contains("Fail")) {
+		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -70,7 +70,7 @@ public class AirplaneController {
 	@DeleteMapping(value = "/{id}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("id") Long id, HttpServletRequest request) {
 		String recStr = airplaneService.notActive(id);
-		if (recStr.contains("Fail")) {
+		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
