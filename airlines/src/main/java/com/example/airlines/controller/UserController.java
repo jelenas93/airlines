@@ -3,6 +3,7 @@ package com.example.airlines.controller;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.airlines.dao.UserDAO;
@@ -50,16 +52,16 @@ public class UserController {
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 	}
 
+	
 	@DeleteMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("username") String name, HttpServletRequest request) {
-		String response = userService.notActive(name);
-		if (response.contains("Greska")) {
-			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
-		} else if (response.contains("Exception")) {
-			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		String recStr = userService.notActive(name);
+		if (recStr.contains("Greska")) {
+			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
+		} else if (recStr.contains("Exception")) {
+			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
+			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
 }

@@ -43,8 +43,15 @@ public class FlightServiceImpl implements FlightService {
 	@Override
 	public String notActive(Long id) {
 		if (flightDAO.existsById(id)) {
-			Optional<Flight> flight = flightDAO.findById(id);
-			flight.get().setActive(false);
+			Flight flight = (flightDAO.findById(id)).get();
+			flight.setActive(false);
+			try {
+				flightDAO.save(flight);
+			} catch (IllegalArgumentException ex1) {
+				return "Exception in Flight Controller POST (ex1), contact admins!";
+			} catch (Exception ex2) {
+				return "Exception in Flight Controller POST (ex2), contact admins!";
+			}
 			return "OK, uspjesno ste suspendovali let.";
 
 		}
@@ -114,5 +121,5 @@ public class FlightServiceImpl implements FlightService {
 		}
 		return "OK, uspjesno ste unijeli let.";
 	}
-	
+
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,7 +61,7 @@ public class FlightController {
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping( value="/{id}", produces="application/json")
+	@DeleteMapping(value="/{id}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("id") Long id, HttpServletRequest request) {
 		String response = flightService.notActive(id);
 		if (response.contains("Greska")) {
