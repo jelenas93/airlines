@@ -37,8 +37,8 @@ public class DestinationController {
 	}
 	
 	
-	@GetMapping(value="/{name}", produces="application/json")
-	public ResponseEntity<Destination> getOne(@PathVariable("name") String username, HttpRequest request){
+	@GetMapping(value="/{name}", headers = { "content-type=application/json" })
+	public ResponseEntity<Destination> getOne(@PathVariable("name") String username, HttpServletRequest request){
 		
 		return new ResponseEntity<Destination>(destinationService.getOne(username), HttpStatus.OK);
 	}

@@ -10,16 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Destination {
-	@JsonProperty("id")
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@JsonProperty("name")
+	
 	@Column(nullable = false)
 	private String name;
 	
-	@JsonProperty("isActive")
 	@Column(nullable = false)
 	private boolean isActive;
 

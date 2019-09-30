@@ -31,7 +31,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 	@Override
 	public String save(Airplane object) {
 		// TODO Auto-generated method stub
-		if ( object.getSeats()>0 || object.getBrand() == null
+		if ( object.getSeats()<0 || object.getBrand() == null
 				|| object.getBrand().equals("") ) {
 			return "Greska, podaci nisu uneseni.";
 		}

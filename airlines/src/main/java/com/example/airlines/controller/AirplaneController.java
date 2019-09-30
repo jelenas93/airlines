@@ -40,11 +40,11 @@ public class AirplaneController {
 	
 	
 	@GetMapping(value="/{id}", produces="application/json")
-	public ResponseEntity<Airplane> getOne(@PathVariable("id") Long id, HttpRequest request){
+	public ResponseEntity<Airplane> getOne(@PathVariable("id") Long id, HttpServletRequest request){
 		
 		return new ResponseEntity<Airplane>(airplaneService.getOneById(id), HttpStatus.OK);
 	}
-	@PostMapping(path="/save",produces="application/json")
+	@PostMapping(path="/save", headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Airplane airplane, HttpServletRequest request){
 		String recStr = airplaneService.save(airplane);
 		if (recStr.contains("Greska")) {

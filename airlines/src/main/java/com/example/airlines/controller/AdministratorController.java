@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.model.Administrator;
+import com.example.airlines.model.User;
 import com.example.airlines.service.AdministratorService;
 
 
@@ -38,12 +39,16 @@ public class AdministratorController {
 	}
 	
 	
-	@GetMapping(value="/{username}", produces="application/json")
-	public ResponseEntity<Administrator> getOne(@PathVariable("username") String username, HttpRequest request){
+	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
+	public ResponseEntity<Administrator> getOne(@PathVariable("username") String username, HttpServletRequest request){
 		
 		return new ResponseEntity<Administrator>(adminService.getOne(username), HttpStatus.OK);
 	}
-	@PostMapping(path="/save",produces="application/json")
+	
+
+	
+	
+	@PostMapping(path="/save", headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request){
 		String recStr = adminService.save(admin);
 		if (recStr.contains("Greska")) {
@@ -67,7 +72,7 @@ public class AdministratorController {
 		}
 	}
 	
-	@DeleteMapping( value = "/{username}",produces="application/json")
+	@DeleteMapping( value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("username") String username, HttpServletRequest request) {
 		String recStr = adminService.notActive(username);
 		if (recStr.contains("Greska")) {

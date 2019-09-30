@@ -42,11 +42,11 @@ public class AirCompanyController {
 	
 	
 	@GetMapping(value="/{id}", produces="application/json")
-	public ResponseEntity<AirCompany> getOne(@PathVariable("id") Long id, HttpRequest request){
+	public ResponseEntity<AirCompany> getOne(@PathVariable("id") Long id, HttpServletRequest request){
 		
 		return new ResponseEntity<AirCompany>(airCompanyService.getOneById(id), HttpStatus.OK);
 	}
-	@PostMapping(path="/save",produces="application/json")
+	@PostMapping(path="/save",headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody AirCompany airCompany, HttpServletRequest request){
 		String recStr = airCompanyService.save(airCompany);
 		if (recStr.contains("Greska")) {
@@ -58,7 +58,7 @@ public class AirCompanyController {
 		}
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping(path="/edit",headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody AirCompany airCompany, HttpServletRequest request) {
 		String recStr = airCompanyService.edit(airCompany);
 		if (recStr.contains("Greska")) {
