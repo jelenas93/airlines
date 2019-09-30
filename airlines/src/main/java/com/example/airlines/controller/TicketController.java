@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.airlines.dao.TicketDAO;
+import com.example.airlines.dao.UserDAO;
 import com.example.airlines.dto.TicketDTO;
 import com.example.airlines.model.Ticket;
+import com.example.airlines.model.User;
 import com.example.airlines.service.TicketService;
 
 @RestController
@@ -25,12 +27,14 @@ public class TicketController {
 	
 	@Autowired
 	TicketDAO ticketDAO;
-	
+		
 	@Autowired
 	TicketService ticketService;
 	
+	
 	@GetMapping(value="/{username}", produces = "application/json")
 	public ResponseEntity<ArrayList<Ticket>> getAll(@PathVariable("username") String name ,HttpServletRequest request) {
+		
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
 	}
 

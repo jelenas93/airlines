@@ -29,7 +29,7 @@ public class FlightServiceImpl implements FlightService {
 	AirCompanyDAO airCompanyDAO;
 
 	@Override
-	public Flight get(Long id) {
+	public Flight getOne(Long id) {
 		if (flightDAO.existsById(id))
 			return flightDAO.findById(id).get();
 		return null;

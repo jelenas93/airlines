@@ -6,7 +6,7 @@ import com.example.airlines.model.Flight;
 
 public interface FlightService {
 
-	public Flight get(Long id);
+	public Flight getOne(Long id);
 
 	public String notActive(Long id);
 

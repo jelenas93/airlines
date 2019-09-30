@@ -30,8 +30,8 @@ public class FlightController {
 	FlightService flightService;
 	
 	@GetMapping(value ="/{id}", produces="application/json")
-	public ResponseEntity<Flight> get(@PathVariable("id") Long id, HttpServletRequest request){
-		return new ResponseEntity<Flight>(flightService.get(id),HttpStatus.OK);
+	public ResponseEntity<Flight> getOne(@PathVariable("id") Long id, HttpServletRequest request){
+		return new ResponseEntity<Flight>(flightService.getOne(id),HttpStatus.OK);
 	}
 	
 	@GetMapping(produces="application/json")
