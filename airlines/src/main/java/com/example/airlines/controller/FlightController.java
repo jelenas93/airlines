@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +51,7 @@ public class FlightController {
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping(path="/edit",produces="application/json")
+	@PutMapping( headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Flight flight, HttpServletRequest request) {
 		String response = flightService.edit(flight);
 		if (response.contains("Greska")) {

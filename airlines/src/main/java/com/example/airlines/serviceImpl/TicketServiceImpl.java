@@ -34,21 +34,27 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public String save(TicketDTO recObj) {
-		if (recObj.getFlight() == null || recObj.getUser() == null || "".equals(recObj.getNumberOfTicket() + "")) {
+		if (recObj.getFlight() == null || recObj.getUser() == null || "".equals(recObj.getNumberOfTicket() + "")
+				|| recObj.getNumberOfTicket() <= 0) {
 			return "Greska, nisu uneseni svi podaci.";
 		}
+		Ticket ticket = (ticketDAO.findById(recObj.getId())).get();
+
+		if (ticket != null) {
+			return "Greska, vec postoji kupljena karta.";
+		}
 		Flight flight = (flightDAO.findById(recObj.getFlight().getId())).get();
-		System.out.println("Id leta jee     "+flight.getId());
-		User user = userDAO.findOneByUsername(recObj.getUser().getUsername());
-		System.out.println("Id korinskika jee     "+user.getId());
 		if (flight == null)
 			return "Greska, ne postoji dati let.";
-		if(user == null)
-			return "Greska, ne postoji korisnik sa korisnickim imenom : "+user.getUsername();
+		User user = userDAO.findOneByUsername(recObj.getUser().getUsername());
+		if (user == null) {
+			return "Greska, ne postoji dati korisnik.";
+		}
+
 		int ukupnoMjesta = recObj.getNumberOfTicket() + flight.getSeatReserved();
 		if (ukupnoMjesta > flight.getAirplane().getSeats())
 			return "Greska, nema dovoljno mjesta.";
-		flight.setSeatReserved(ukupnoMjesta-recObj.getNumberOfTicket());
+		flight.setSeatReserved(ukupnoMjesta);
 		try {
 			flightDAO.save(flight);
 		} catch (IllegalArgumentException ex1) {
@@ -57,7 +63,7 @@ public class TicketServiceImpl implements TicketService {
 			return "Exception in Ticket Controller POST (ex2), contact admins!";
 		}
 
-		Ticket ticket = new Ticket(user, recObj.getNumberOfTicket(), flight);
+		ticket = new Ticket(user, recObj.getNumberOfTicket(), flight);
 		try {
 			ticketDAO.save(ticket);
 		} catch (IllegalArgumentException ex1) {

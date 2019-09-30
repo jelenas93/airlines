@@ -1,6 +1,7 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,14 +67,23 @@ public class FlightServiceImpl implements FlightService {
 				|| "".equals(recObj.getPrice() + "")) {
 			return "Greska, niste unijeli sve podatke.";
 		}
-		Optional<Flight> flight = flightDAO.findById(recObj.getId());
-		if (flight.get() != null) {
-			return "Greska, vec postoji dati let.";
+
+		Destination destination = destinationDAO.findOneByName(recObj.getDestination().getName());
+		if (destination == null) {
+			return "Greska, ne postoji unesena destinacija.";
 		}
-		Flight fl = new Flight(recObj.getAirplane(), recObj.getSeatReserved(), recObj.getDestination(),
-				recObj.getAirCompany(), recObj.getFlightDate(), recObj.getPrice(), true);
+		Airplane airplane = (airplaneDAO.findById(recObj.getAirplane().getId())).get();
+		if (airplane == null) {
+			return "Greska, ne postoji uneseni avion.";
+		}
+		AirCompany airCompany = airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
+		if (airCompany == null) {
+			return "Greska, ne postoji unesena avio kompanija.";
+		}
+		Flight fligh = new Flight(airplane, recObj.getSeatReserved(), destination,
+				airCompany, recObj.getFlightDate(), recObj.getPrice(), true);
 		try {
-			flightDAO.save(fl);
+			flightDAO.save(fligh);
 		} catch (IllegalArgumentException ex1) {
 			return "Exception in Flight Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
@@ -91,7 +101,7 @@ public class FlightServiceImpl implements FlightService {
 			return "Greska, niste unijeli sve podatke.";
 		}
 		Optional<Airplane> airplane = airplaneDAO.findById(recObj.getAirplane().getId());
-		if (airplane.get() == null) {
+		if (airplane.isEmpty()) {
 			return "Greska, ne postoji avion sa unesenim podacima.";
 		}
 		Destination destination = destinationDAO.findOneByName(recObj.getDestination().getName());
@@ -119,7 +129,7 @@ public class FlightServiceImpl implements FlightService {
 		} catch (Exception ex2) {
 			return "Exception in Flight Controller POST (ex2), contact admins!";
 		}
-		return "OK, uspjesno ste unijeli let.";
+		return "OK, uspjesno ste izmjenili let.";
 	}
 
 }

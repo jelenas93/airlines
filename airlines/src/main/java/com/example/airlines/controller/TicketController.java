@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.airlines.dao.TicketDAO;
-import com.example.airlines.dao.UserDAO;
 import com.example.airlines.dto.TicketDTO;
 import com.example.airlines.model.Ticket;
-import com.example.airlines.model.User;
 import com.example.airlines.service.TicketService;
 
 @RestController
