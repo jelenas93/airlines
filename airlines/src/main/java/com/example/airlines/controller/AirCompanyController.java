@@ -7,7 +7,6 @@ import com.example.airlines.dao.AirCompanyDAO;
 import com.example.airlines.model.AirCompany;
 import com.example.airlines.service.AirCompanyService;
 
-import java.net.http.HttpRequest;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,12 +40,12 @@ public class AirCompanyController {
 	}
 	
 	
-	@GetMapping(value="/{id}", produces="application/json")
-	public ResponseEntity<AirCompany> getOne(@PathVariable("id") Long id, HttpServletRequest request){
+	@GetMapping(value="/{name}", produces="application/json")
+	public ResponseEntity<AirCompany> getOne(@PathVariable("name") String name, HttpServletRequest request){
 		
-		return new ResponseEntity<AirCompany>(airCompanyService.getOneById(id), HttpStatus.OK);
+		return new ResponseEntity<AirCompany>(airCompanyService.getOneByName(name), HttpStatus.OK);
 	}
-	@PostMapping(path="/save",headers = { "content-type=application/json" })
+	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody AirCompany airCompany, HttpServletRequest request){
 		String recStr = airCompanyService.save(airCompany);
 		if (recStr.contains("Greska")) {
@@ -58,7 +57,7 @@ public class AirCompanyController {
 		}
 	}
 	
-	@PutMapping(path="/edit",headers = { "content-type=application/json" })
+	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody AirCompany airCompany, HttpServletRequest request) {
 		String recStr = airCompanyService.edit(airCompany);
 		if (recStr.contains("Greska")) {
@@ -69,6 +68,8 @@ public class AirCompanyController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
+	
+	
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("name") String name, HttpServletRequest request) {
 		String recStr = airCompanyService.notActive(name);

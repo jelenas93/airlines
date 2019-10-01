@@ -1,5 +1,5 @@
 package com.example.airlines.controller;
-import java.net.http.HttpRequest;
+
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +44,7 @@ public class AirplaneController {
 		
 		return new ResponseEntity<Airplane>(airplaneService.getOneById(id), HttpStatus.OK);
 	}
-	@PostMapping(path="/save", headers = { "content-type=application/json" })
+	@PostMapping( headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Airplane airplane, HttpServletRequest request){
 		String recStr = airplaneService.save(airplane);
 		if (recStr.contains("Greska")) {
@@ -56,7 +56,7 @@ public class AirplaneController {
 		}
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping( headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Airplane airplane, HttpServletRequest request) {
 		String recStr = airplaneService.edit(airplane);
 		if (recStr.contains("Greska")) {

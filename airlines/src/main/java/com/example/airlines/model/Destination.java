@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Destination {
@@ -16,7 +15,7 @@ public class Destination {
 	private Long id;
 	
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique=true)
 	private String name;
 	
 	@Column(nullable = false)

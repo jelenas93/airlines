@@ -12,7 +12,7 @@ public interface AirCompanyService {
 	public ArrayList<AirCompany> getAll();
 
 
-	public AirCompany getOneById(Long id);
+	public AirCompany getOneByName(String name);
 	
 	public String save(AirCompany recObj);
 

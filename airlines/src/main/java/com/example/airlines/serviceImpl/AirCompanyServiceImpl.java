@@ -1,14 +1,14 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AirCompanyDAO;
-import com.example.airlines.model.Administrator;
 import com.example.airlines.model.AirCompany;
-import com.example.airlines.model.Destination;
 import com.example.airlines.service.AirCompanyService;
 @Service
 public class AirCompanyServiceImpl  implements AirCompanyService{
@@ -17,24 +17,26 @@ public class AirCompanyServiceImpl  implements AirCompanyService{
 	@Override
 	public ArrayList<AirCompany> getAll() {
 		// TODO Auto-generated method stub
-		return (ArrayList<AirCompany>) airCompanyDAO.findAll();
+		Iterable<AirCompany> iter = airCompanyDAO.findAll();
+		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 
-	public AirCompany getOneById(Long id) {
+	public AirCompany getOneByName(String name) {
 		// TODO Auto-generated method stub
-		return (airCompanyDAO.findById(id)).get();
+		return airCompanyDAO.findOneByName(name);
 	}
 
 	@Override
 	public String save(AirCompany object) {
 		// TODO Auto-generated method stub
-		if (object.getName() == null || object.getName().equals("") ) {
+		if (object.getName() == null || "".equals(object.getName()) ) {
 			return "Greska, podaci nisu uneseni.";
 		}
 		AirCompany airCompany = airCompanyDAO.findOneByName(object.getName());
 		if (airCompany != null) {
-			return "Greska, korisnik sa datim username-om vec postoji.";
+			return "Greska, avio kompanija vec postoji.";
 		}
 
 		airCompany = new AirCompany(object.getName(), true);
@@ -54,13 +56,18 @@ public class AirCompanyServiceImpl  implements AirCompanyService{
 	@Override
 	public String edit(AirCompany object) {
 		// TODO Auto-generated method stub
-		if (object.getName() == null || object.getName().equals("") ) {
+		if (object.getName() == null || "".equals(object.getName()) ) {
 			return "Greska, podaci nisu uneseni.";
 		}
-		AirCompany airCompany = airCompanyDAO.findOneByName(object.getName());
+		
+		AirCompany airCompany = (airCompanyDAO.findById(object.getId())).get();
 		if (airCompany == null) {
-			return "Greska, airCompany sa datim imenom ne postoji.";
+			return "Greska, avio kompanija ne postoji.";
 		}
+		if (airCompanyDAO.findOneByName(object.getName()) != null) {
+			return "Greska, avio kompanija sa datim imenom vec postoji.";
+		}
+		
 		airCompany.setName(object.getName());
 		airCompany.setActive(true);
 		try {
@@ -75,11 +82,14 @@ public class AirCompanyServiceImpl  implements AirCompanyService{
 		return "OK, uspjesno sacuvano!";
 	}
 
+	
+	
+	
 	@Override
 	public String notActive(String name) {
 		// TODO Auto-generated method stub
 		AirCompany airCompany = airCompanyDAO.findOneByName(name);
-		if (name == null || name.equals("")) {
+		if (name == null || "".equals(name)) {
 			return "Greska, podaci nisu uneseni.";
 		}
 		if (airCompany == null) {

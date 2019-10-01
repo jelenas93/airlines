@@ -1,6 +1,5 @@
 package com.example.airlines.controller;
 
-import java.net.http.HttpRequest;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.model.Administrator;
-import com.example.airlines.model.User;
 import com.example.airlines.service.AdministratorService;
 
 
@@ -48,7 +46,7 @@ public class AdministratorController {
 
 	
 	
-	@PostMapping(path="/save", headers = { "content-type=application/json" })
+	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request){
 		String recStr = adminService.save(admin);
 		if (recStr.contains("Greska")) {
@@ -60,7 +58,7 @@ public class AdministratorController {
 		}
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping( headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Administrator admin, HttpServletRequest request) {
 		String recStr = adminService.edit(admin);
 		if (recStr.contains("Greska")) {

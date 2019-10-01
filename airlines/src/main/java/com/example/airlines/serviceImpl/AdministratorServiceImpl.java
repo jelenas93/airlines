@@ -1,6 +1,8 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public ArrayList<Administrator> getAll() {
 		// TODO Auto-generated method stub
-		return (ArrayList<Administrator>) adminDAO.findAll();
+		Iterable<Administrator> iter = adminDAO.findAll();
+		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
@@ -30,14 +34,26 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
+	public Administrator getOneByUsernameAndPassword(String username, String password) {
+		return adminDAO.findOneByUsernameAndPassword(username, password);
+	}
+	
+	@Override
+	public ArrayList<Administrator> getAllByAirCompany(AirCompany airCompany) {
+		return (ArrayList<Administrator>)adminDAO.findAllByAirCompany(airCompany);
+	}
+	@Override
 	public String save(Administrator object) {
 		// TODO Auto-generated method stub
-		if (object.getUsername() == null || object.getUsername().equals("") || object.getPassword() == null
-				|| object.getPassword().equals("") || object.getAirCompany() == null
-						|| object.getAirCompany().equals("")) {
+		if (object.getUsername() == null || "".equals(object.getUsername()) || object.getPassword() == null
+				|| "".equals(object.getPassword()) || object.getAirCompany() == null) {
 			return "Greska, podaci nisu uneseni.";
 		}
+		AirCompany aircompany=airCompanyDAO.findOneByName(object.getAirCompany().getName());
 		Administrator admin = adminDAO.findOneByUsername(object.getUsername());
+		if(aircompany==null) {
+			return "Greska, ne postoji unesena avio kompanuja.";
+		}
 		if (admin != null) {
 			return "Greska, korisnik sa datim username-om vec postoji.";
 		}
@@ -59,21 +75,24 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public String edit(Administrator object) {
 		// TODO Auto-generated method stub
-		if (object.getUsername() == null || object.getUsername().equals("") || object.getPassword() == null
-				|| object.getPassword().equals("") || object.getAirCompany() == null) {
+		if (object.getUsername() == null || "".equals(object.getUsername()) || object.getPassword() == null
+				|| "".equals(object.getPassword()) || object.getAirCompany() == null) {
 			return "Greska, podaci nisu uneseni.";
 		}
+		/*
 		AirCompany airCompany = airCompanyDAO.findOneByName(object.getAirCompany().getName());
 		if (airCompany == null) {
 			return "Greska, avio kompanija sa datim imenom ne postoji.";
 		}
+*/
 		Administrator admin = adminDAO.findOneByUsername(object.getUsername());
 		if (admin == null) {
 			return "Greska, korisnik sa datim username-om ne postoji.";
 		}
-		admin.setUsername(object.getUsername());
+		
 		admin.setPassword(object.getPassword());
-		admin.setAirCompany(airCompany);
+		admin.setActive(object.isActive());
+		//admin.setAirCompany(airCompany);
 		try {
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {
@@ -91,7 +110,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public String notActive(String username) {
 		// TODO Auto-generated method stub
 		Administrator admin = adminDAO.findOneByUsername(username);
-		if (username == null || username.equals("")) {
+		if (username == null || "".equals(username)) {
 			return "Greska, podaci nisu uneseni.";
 		}
 		if (admin == null) {

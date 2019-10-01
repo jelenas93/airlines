@@ -1,13 +1,13 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AirplaneDAO;
-import com.example.airlines.model.Administrator;
-import com.example.airlines.model.AirCompany;
 import com.example.airlines.model.Airplane;
 import com.example.airlines.service.AirplaneService;
 @Service
@@ -17,28 +17,35 @@ public class AirplaneServiceImpl implements AirplaneService{
 	@Override
 	public ArrayList<Airplane> getAll() {
 		// TODO Auto-generated method stub
-		return (ArrayList<Airplane>) airplaneDAO.findAll();
+		Iterable<Airplane> iter = airplaneDAO.findAll();
+		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 	public ArrayList<Airplane> getAllByBrand(String brand){
 		return  (ArrayList<Airplane>)airplaneDAO.findAllByBrand(brand);
 	}
-
 	public Airplane getOneById(Long id) {
 		// TODO Auto-generated method stub
 		return (airplaneDAO.findById(id)).get();
+	}
+	public Airplane getOneByBrandAndSeats(Airplane airplane) {
+		// TODO Auto-generated method stub
+		return (airplaneDAO.findOneByBrandAndSeats(airplane.getBrand(),airplane.getSeats()));
 	}
 
 	@Override
 	public String save(Airplane object) {
 		// TODO Auto-generated method stub
 		if ( object.getSeats()<0 || object.getBrand() == null
-				|| object.getBrand().equals("") ) {
+				|| "".equals(object.getBrand()) ) {
 			return "Greska, podaci nisu uneseni.";
 		}
 	
 
-		Airplane airplane = new Airplane( object.getSeats(), object.getBrand(), object.isActive());
-
+		Airplane airplane = new Airplane( object.getSeats(), object.getBrand(), true);
+		if(this.getOneByBrandAndSeats(airplane)!=null) {
+			return "Greska, avion sa tim podacima vec postoji.";
+		}
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
@@ -54,17 +61,18 @@ public class AirplaneServiceImpl implements AirplaneService{
 	@Override
 	public String edit(Airplane object) {
 		// TODO Auto-generated method stub
-		if (object.getBrand() == null || object.getBrand().equals("") 
-				|| object.getSeats()>0) {
+		if (object.getBrand() == null || "".equals(object.getBrand()) 
+				|| object.getSeats()<0) {
 			return "Greska, podaci nisu uneseni.";
 		}
-		Airplane airplane = (airplaneDAO.findById(object.getId())).get();
+		Airplane airplane = airplaneDAO.findOneById(object.getId());
 	    if (airplane == null) {
 			return "Greska, avion sa datim podacima ne postoji.";
 		}
 		
 	    airplane.setBrand(object.getBrand());
 	    airplane.setSeats(object.getSeats());
+	    airplane.setActive(true);
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
