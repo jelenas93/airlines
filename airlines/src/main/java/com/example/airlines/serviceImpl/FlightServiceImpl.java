@@ -3,6 +3,8 @@ package com.example.airlines.serviceImpl;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,9 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public ArrayList<Flight> getAll() {
-		return (ArrayList<Flight>) flightDAO.findAll();
+		Iterable <Flight> iter = flightDAO.findAll();
+		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override

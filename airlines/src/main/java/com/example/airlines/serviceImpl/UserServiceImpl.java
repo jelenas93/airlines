@@ -1,6 +1,8 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ArrayList<User> getAll() {
-		return (ArrayList<User>) userDAO.findAll();
+		Iterable<User> iter= userDAO.findAll();
+		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
@@ -63,5 +67,18 @@ public class UserServiceImpl implements UserService {
 		}
 		return "Ok, korisnik uspjesno suspendovan.";
 	}
+
+	@Override
+	public String edit(User recObj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getByUsernameAndPassword(String name, String password) {
+		return userDAO.findOneByUsernameAndPassword(name, password);
+	}
+
+	
 
 }

@@ -58,7 +58,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, korisnik sa datim username-om vec postoji.";
 		}
 
-		admin = new Administrator(object.getUsername(), object.getPassword(), object.getAirCompany(), true);
+		admin = new Administrator(object.getUsername(), object.getPassword(), aircompany, true);
 
 		try {
 			adminDAO.save(admin);
@@ -91,7 +91,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 		}
 		
 		admin.setPassword(object.getPassword());
-		admin.setActive(object.isActive());
 		admin.setAirCompany(airCompany);
 		try {
 			adminDAO.save(admin);

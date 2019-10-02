@@ -1,6 +1,7 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -60,14 +61,14 @@ public class AirCompanyServiceImpl  implements AirCompanyService{
 			return "Greska, podaci nisu uneseni.";
 		}
 		
-		AirCompany airCompany = (airCompanyDAO.findById(object.getId())).get();
-		if (airCompany == null) {
+		Optional<AirCompany> airCompanyPom = airCompanyDAO.findById(object.getId());
+		if (airCompanyPom.isEmpty()) {
 			return "Greska, avio kompanija ne postoji.";
 		}
 		if (airCompanyDAO.findOneByName(object.getName()) != null) {
 			return "Greska, avio kompanija sa datim imenom vec postoji.";
 		}
-		
+		AirCompany airCompany=airCompanyPom.get();
 		airCompany.setName(object.getName());
 		airCompany.setActive(true);
 		try {
