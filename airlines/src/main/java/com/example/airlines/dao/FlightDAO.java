@@ -19,4 +19,5 @@ public interface FlightDAO extends CrudRepository<Flight, Long> {
 	
 	public ArrayList<Flight> findAllByPrice(Double price);
 
+	public Flight findOneById(Long id);
 }

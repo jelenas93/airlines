@@ -9,5 +9,5 @@ import com.example.airlines.model.Ticket;
 public interface TicketDAO extends CrudRepository<Ticket, Long>{
 	
 	public ArrayList<Ticket> findAllByUser_Username(String name);
-	
+	public Ticket findOneById(Long id);
 }
