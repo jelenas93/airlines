@@ -1,6 +1,7 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -62,10 +63,11 @@ public class DestinationServiceImpl implements DestinationService {
 		if (object.getName() == null || "".equals(object.getName())) {
 			return "Greska, podaci nisu uneseni.";
 		}
-		Destination destination = (destinationDAO.findById(object.getId())).get();
-		if (destination == null) {
+		Optional<Destination> destinationPom = destinationDAO.findById(object.getId());
+		if (destinationPom.isEmpty()) {
 			return "Greska, destinacija ne postoji.";
 		}
+		Destination destination=destinationPom.get();
 		if (destinationDAO.findOneByName(object.getName()) != null) {
 			return "Greska, destinacija sa datim imenom vec postoji.";
 		}

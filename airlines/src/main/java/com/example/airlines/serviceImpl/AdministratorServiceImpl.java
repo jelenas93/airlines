@@ -79,12 +79,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 				|| "".equals(object.getPassword()) || object.getAirCompany() == null) {
 			return "Greska, podaci nisu uneseni.";
 		}
-		/*
+	
 		AirCompany airCompany = airCompanyDAO.findOneByName(object.getAirCompany().getName());
 		if (airCompany == null) {
 			return "Greska, avio kompanija sa datim imenom ne postoji.";
 		}
-*/
+
 		Administrator admin = adminDAO.findOneByUsername(object.getUsername());
 		if (admin == null) {
 			return "Greska, korisnik sa datim username-om ne postoji.";
@@ -92,7 +92,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 		
 		admin.setPassword(object.getPassword());
 		admin.setActive(object.isActive());
-		//admin.setAirCompany(airCompany);
+		admin.setAirCompany(airCompany);
 		try {
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {
