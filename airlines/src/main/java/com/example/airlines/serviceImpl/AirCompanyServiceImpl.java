@@ -70,7 +70,6 @@ public class AirCompanyServiceImpl  implements AirCompanyService{
 		}
 		AirCompany airCompany=airCompanyPom.get();
 		airCompany.setName(object.getName());
-		airCompany.setActive(true);
 		try {
 			airCompanyDAO.save(airCompany);
 		} catch (IllegalArgumentException ex1) {

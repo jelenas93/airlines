@@ -72,7 +72,6 @@ public class AirplaneServiceImpl implements AirplaneService{
 		
 	    airplane.setBrand(object.getBrand());
 	    airplane.setSeats(object.getSeats());
-	    airplane.setActive(true);
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {

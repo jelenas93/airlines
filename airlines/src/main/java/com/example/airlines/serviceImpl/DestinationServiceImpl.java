@@ -72,7 +72,6 @@ public class DestinationServiceImpl implements DestinationService {
 			return "Greska, destinacija sa datim imenom vec postoji.";
 		}
 		destination.setName(object.getName());
-		destination.setActive(true);
 		try {
 			destinationDAO.save(destination);
 		} catch (IllegalArgumentException ex1) {
