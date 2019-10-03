@@ -1,6 +1,7 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,9 +67,9 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public String save(Flight recObj) {
-		if (recObj.getAirplane() == null || "".equals(recObj.getSeatReserved()) || recObj.getDestination() == null
-				|| recObj.getAirCompany() == null || recObj.getFlightDate() == null || recObj.getPrice() == null
-				|| "".equals(recObj.getPrice() + "")) {
+		if (recObj.getAirplane() == null || recObj.getDestination() == null
+				|| recObj.getAirCompany() == null || recObj.getFlightDate() == null
+				|| "".equals(recObj.getPrice() + "") || recObj.getPrice()<=0) {
 			return "Greska, niste unijeli sve podatke.";
 		}
 
@@ -76,15 +77,16 @@ public class FlightServiceImpl implements FlightService {
 		if (destination == null) {
 			return "Greska, ne postoji unesena destinacija.";
 		}
-		Airplane airplane = (airplaneDAO.findById(recObj.getAirplane().getId())).get();
-		if (airplane == null) {
+		Optional<Airplane> airplane = airplaneDAO.findById(recObj.getAirplane().getId());
+		if (airplane.isEmpty()) {
 			return "Greska, ne postoji uneseni avion.";
 		}
 		AirCompany airCompany = airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
 		if (airCompany == null) {
 			return "Greska, ne postoji unesena avio kompanija.";
 		}
-		Flight fligh = new Flight(airplane, recObj.getSeatReserved(), destination,
+		//kad kreiram let valjda mjesta nisu rezervisana, vec tek akd se karte kupuju mjesta se popunjavaju
+		Flight fligh = new Flight(airplane.get(), 0, destination,
 				airCompany, recObj.getFlightDate(), recObj.getPrice(), true);
 		try {
 			flightDAO.save(fligh);
@@ -135,5 +137,26 @@ public class FlightServiceImpl implements FlightService {
 		}
 		return "OK, uspjesno ste izmjenili let.";
 	}
+	
+	public ArrayList<Flight> getAllByAirCompany_Name(String name){
+		return flightDAO.findAllByAirCompany_Name(name);
+	}
+	
+	public ArrayList<Flight> findAllByDestination_Name(String name){
+		return flightDAO.findAllByDestination_Name(name);
+	}
+	
+	public ArrayList<Flight> findAllByAirplane_Brand(String brand){
+		return flightDAO.findAllByAirplane_Brand(brand);
+	}
+	
+	public ArrayList<Flight> findAllByFlightDate(Date date){
+		return flightDAO.findAllByFlightDate(date);
+	}
+	
+	public ArrayList<Flight> findAllByPrice(Double price){
+		return flightDAO.findAllByPrice(price);
+	}
+
 
 }
