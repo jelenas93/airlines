@@ -88,8 +88,8 @@ public class AirplaneServiceImpl implements AirplaneService{
 		// TODO Auto-generated method stub
 		Airplane airplane = (airplaneDAO.findById(id)).get();
 		
-		if (id<0) {
-			return "Greska, podaci nisu uneseni.";
+		if (airplaneDAO.existsById(id)) {
+			return "Greska, podaci nisu dobro uneseni.";
 		}
 		if (airplane == null) {
 			return "Greska, avion ne postoji.";
