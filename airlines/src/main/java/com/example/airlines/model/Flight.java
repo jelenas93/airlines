@@ -113,7 +113,7 @@ public class Flight {
 		this.price = price;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return isActive;
 	}
 

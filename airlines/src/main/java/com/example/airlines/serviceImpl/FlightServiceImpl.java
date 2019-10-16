@@ -3,10 +3,9 @@ package com.example.airlines.serviceImpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AirCompanyDAO;
@@ -18,8 +17,8 @@ import com.example.airlines.model.Airplane;
 import com.example.airlines.model.Destination;
 import com.example.airlines.model.Flight;
 import com.example.airlines.service.FlightService;
-
 @Service
+@Profile("default")
 public class FlightServiceImpl implements FlightService {
 
 	@Autowired
@@ -40,9 +39,7 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public ArrayList<Flight> getAll() {
-		Iterable <Flight> iter = flightDAO.findAll();
-		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return (ArrayList<Flight>) flightDAO.findAll();
 	}
 
 	@Override
@@ -84,11 +81,11 @@ public class FlightServiceImpl implements FlightService {
 		if (airCompany == null) {
 			return "Greska, ne postoji unesena avio kompanija.";
 		}
-		//kad kreiram let valjda mjesta nisu rezervisana, vec tek akd se karte kupuju mjesta se popunjavaju
-		Flight fligh = new Flight(airplane.get(), 0, destination,
+		//kad kreiram let valjda mjesta nisu rezervisana, vec tek kad se karte kupuju mjesta se popunjavaju
+		Flight flight = new Flight(airplane.get(), 0, destination,
 				airCompany, recObj.getFlightDate(), recObj.getPrice(), true);
 		try {
-			flightDAO.save(fligh);
+			flightDAO.save(flight);
 		} catch (IllegalArgumentException ex1) {
 			return "Exception in Flight Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
@@ -100,9 +97,9 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public String edit(Flight recObj) {
-		if (recObj.getAirplane() == null || "".equals(recObj.getSeatReserved()) || recObj.getDestination() == null
-				|| recObj.getAirCompany() == null || recObj.getFlightDate() == null || recObj.getPrice() == null
-				|| "".equals(recObj.getPrice() + "")) {
+		if (recObj.getAirplane() == null || "".equals(recObj.getSeatReserved()) || recObj.getSeatReserved()<0 
+				|| recObj.getDestination() == null || recObj.getAirCompany() == null || recObj.getFlightDate() == null
+				|| "".equals(recObj.getPrice() + "") || recObj.getPrice()<=0) {
 			return "Greska, niste unijeli sve podatke.";
 		}
 		Optional<Airplane> airplane = airplaneDAO.findById(recObj.getAirplane().getId());
@@ -121,12 +118,19 @@ public class FlightServiceImpl implements FlightService {
 		if (flight.get() == null) {
 			return "Greska, ne postoji dati let.";
 		}
+		
+		int brojMogucihMjesta=airplane.get().getSeats();
+		if(recObj.getSeatReserved()>brojMogucihMjesta) {
+			return "Greska, ne mozete rezervisati više mjesta nego što ih ima u avionu.";
+		}
+		
 		flight.get().setAirplane(airplane.get());
 		flight.get().setSeatReserved(recObj.getSeatReserved());
 		flight.get().setDestination(destination);
 		flight.get().setAirCompany(airCompany);
 		flight.get().setFlightDate(recObj.getFlightDate());
 		flight.get().setPrice(recObj.getPrice());
+		flight.get().setActive(recObj.getActive());
 		try {
 			flightDAO.save(flight.get());
 		} catch (IllegalArgumentException ex1) {
@@ -155,6 +159,11 @@ public class FlightServiceImpl implements FlightService {
 	
 	public ArrayList<Flight> findAllByPrice(Double price){
 		return flightDAO.findAllByPrice(price);
+	}
+
+	@Override
+	public ArrayList<Flight> getAllActive() {
+		return (ArrayList<Flight>) flightDAO.findAllByIsActive(true);
 	}
 
 

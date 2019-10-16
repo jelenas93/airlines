@@ -33,6 +33,11 @@ public class UserController {
 	public ResponseEntity<ArrayList<User>> getAll(HttpServletRequest request) {
 		return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
 	}
+	
+	@GetMapping(path="/aktivni", produces = "application/json")
+	public ResponseEntity<ArrayList<User>> getAllActive(HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<User>>(userService.getAllActive(), HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
 	// @GetMapping(value = "/{username}", produces="aplication/json")

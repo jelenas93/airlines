@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.airlines.dao.TicketDAO;
-import com.example.airlines.dto.TicketDTO;
 import com.example.airlines.model.Ticket;
 import com.example.airlines.service.TicketService;
 
@@ -32,12 +31,11 @@ public class TicketController {
 	
 	@GetMapping(value="/{username}", produces = "application/json")
 	public ResponseEntity<ArrayList<Ticket>> getAll(@PathVariable("username") String name ,HttpServletRequest request) {
-		
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
-	public ResponseEntity<String> save(@RequestBody TicketDTO ticket, HttpServletRequest request){
+	public ResponseEntity<String> save(@RequestBody Ticket ticket, HttpServletRequest request){
 		String response=ticketService.save(ticket);
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);

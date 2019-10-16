@@ -21,32 +21,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("/api/airCompany")
 public class AirCompanyController {
-
-	
 
 	@Autowired
 	AirCompanyDAO airCompanyDAO;
 	@Autowired
 	AirCompanyService airCompanyService;
-	
 
-	@GetMapping( produces = "application/json")
-	public ResponseEntity<ArrayList<AirCompany>> getAll() {
+	@GetMapping(produces = "application/json")
+	public ResponseEntity<ArrayList<AirCompany>> getAll(HttpServletRequest request) {
 		return new ResponseEntity<ArrayList<AirCompany>>(airCompanyService.getAll(), HttpStatus.OK);
 	}
-	
-	
-	@GetMapping(value="/{name}", produces="application/json")
-	public ResponseEntity<AirCompany> getOne(@PathVariable("name") String name, HttpServletRequest request){
-		
-		return new ResponseEntity<AirCompany>(airCompanyService.getOneByName(name), HttpStatus.OK);
+
+	@GetMapping(path = "/aktivni", produces = "application/json")
+	public ResponseEntity<ArrayList<AirCompany>> getAllActive(HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<AirCompany>>(airCompanyService.getAllActive(), HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/{name}", produces = "application/json")
+	public ResponseEntity<AirCompany> getOne(@PathVariable("name") String name, HttpServletRequest request) {
+
+		return new ResponseEntity<AirCompany>(airCompanyService.getOne(name), HttpStatus.OK);
+	}
+
 	@PostMapping(headers = { "content-type=application/json" })
-	public ResponseEntity<String> save(@RequestBody AirCompany airCompany, HttpServletRequest request){
+	public ResponseEntity<String> save(@RequestBody AirCompany airCompany, HttpServletRequest request) {
 		String recStr = airCompanyService.save(airCompany);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
@@ -56,7 +57,7 @@ public class AirCompanyController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
+
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody AirCompany airCompany, HttpServletRequest request) {
 		String recStr = airCompanyService.edit(airCompany);
@@ -68,10 +69,9 @@ public class AirCompanyController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
-	
+
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
-	public ResponseEntity<String> flagNotActive(@PathVariable("name") String name, HttpServletRequest request) {
+	public ResponseEntity<String> notActive(@PathVariable("name") String name, HttpServletRequest request) {
 		String recStr = airCompanyService.notActive(name);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);

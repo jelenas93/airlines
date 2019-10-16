@@ -1,8 +1,6 @@
 package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +17,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ArrayList<User> getAll() {
-		Iterable<User> iter= userDAO.findAll();
-		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return (ArrayList<User>) userDAO.findAll();
 	}
 
 	@Override
@@ -77,6 +73,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getByUsernameAndPassword(String name, String password) {
 		return userDAO.findOneByUsernameAndPassword(name, password);
+	}
+
+	@Override
+	public ArrayList<User> getAllActive() {
+		return (ArrayList<User>) userDAO.findAllByIsActive(true);
 	}
 
 	

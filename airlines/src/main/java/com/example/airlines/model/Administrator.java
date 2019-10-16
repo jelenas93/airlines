@@ -72,7 +72,7 @@ public class Administrator {
 		this.airCompany = airCompany;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return isActive;
 	}
 

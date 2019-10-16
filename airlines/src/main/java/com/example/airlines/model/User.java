@@ -69,7 +69,7 @@ public class User {
 		this.mail = mail;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return isActive;
 	}
 

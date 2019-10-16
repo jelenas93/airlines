@@ -28,21 +28,24 @@ public class DestinationController {
 	DestinationDAO destinationDAO;
 	@Autowired
 	DestinationService destinationService;
-	
 
-	@GetMapping( produces = "application/json")
-	public ResponseEntity<ArrayList<Destination>> getAll() {
+	@GetMapping(produces = "application/json")
+	public ResponseEntity<ArrayList<Destination>> getAll(HttpServletRequest request) {
 		return new ResponseEntity<ArrayList<Destination>>(destinationService.getAll(), HttpStatus.OK);
 	}
-	
-	
-	@GetMapping(value="/{name}", headers = { "content-type=application/json" })
-	public ResponseEntity<Destination> getOne(@PathVariable("name") String username, HttpServletRequest request){
-		
+
+	@GetMapping(path = "/aktivni", produces = "application/json")
+	public ResponseEntity<ArrayList<Destination>> getAllActive(HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<Destination>>(destinationService.getAllActive(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/{name}", headers = { "content-type=application/json" })
+	public ResponseEntity<Destination> getOne(@PathVariable("name") String username, HttpServletRequest request) {
 		return new ResponseEntity<Destination>(destinationService.getOne(username), HttpStatus.OK);
 	}
-	@PostMapping(produces="application/json")
-	public ResponseEntity<String> save(@RequestBody Destination destination, HttpServletRequest request){
+
+	@PostMapping(produces = "application/json")
+	public ResponseEntity<String> save(@RequestBody Destination destination, HttpServletRequest request) {
 		String recStr = destinationService.save(destination);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
@@ -52,9 +55,10 @@ public class DestinationController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
-	@PutMapping( headers = { "content-type=application/json" })
+
+	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Destination destination, HttpServletRequest request) {
+
 		String recStr = destinationService.edit(destination);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
@@ -64,10 +68,9 @@ public class DestinationController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
-	
+
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
-	public ResponseEntity<String> flagNotActive(@PathVariable("name") String name, HttpServletRequest request) {
+	public ResponseEntity<String> notActive(@PathVariable("name") String name, HttpServletRequest request) {
 		String recStr = destinationService.notActive(name);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
@@ -77,6 +80,5 @@ public class DestinationController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
-	
+
 }

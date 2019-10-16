@@ -14,7 +14,6 @@ public class Destination {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	
 	@Column(nullable = false, unique=true)
 	private String name;
 	
@@ -47,7 +46,7 @@ public class Destination {
 		this.name = name;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return isActive;
 	}
 
