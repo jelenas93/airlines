@@ -45,7 +45,7 @@ public class AirCompany {
 		this.name = name;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return isActive;
 	}
 

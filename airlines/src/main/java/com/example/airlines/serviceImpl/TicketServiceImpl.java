@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.example.airlines.dao.FlightDAO;
 import com.example.airlines.dao.TicketDAO;
 import com.example.airlines.dao.UserDAO;
-import com.example.airlines.dto.TicketDTO;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.Ticket;
 import com.example.airlines.model.User;
@@ -32,7 +31,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public String save(TicketDTO recObj) {
+	public String save(Ticket recObj) {
 		if (recObj.getFlight() == null || recObj.getUser() == null || "".equals(recObj.getNumberOfTicket() + "")
 				|| recObj.getNumberOfTicket() <= 0) {
 			return "Greska, nisu uneseni svi podaci.";

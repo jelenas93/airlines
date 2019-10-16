@@ -19,4 +19,6 @@ public interface AirplaneService {
 	public String edit(Airplane recObj);
 
 	public String notActive(Long id);
+	
+	public ArrayList<Airplane> getAllActive();
 }

@@ -21,7 +21,6 @@ import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.service.AdministratorService;
 
-
 @RestController
 @RequestMapping("/api/administrator")
 public class AdministratorController {
@@ -35,19 +34,19 @@ public class AdministratorController {
 	public ResponseEntity<ArrayList<Administrator>> getAll(HttpServletRequest request) {
 		return new ResponseEntity<ArrayList<Administrator>>(adminService.getAll(), HttpStatus.OK);
 	}
-	
-	
+
+	@GetMapping(path = "/aktivni", produces = "application/json")
+	public ResponseEntity<ArrayList<Administrator>> getAllActive(HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<Administrator>>(adminService.getAllActive(), HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
-	public ResponseEntity<Administrator> getOne(@PathVariable("username") String username, HttpServletRequest request){
-		
+	public ResponseEntity<Administrator> getOne(@PathVariable("username") String username, HttpServletRequest request) {
 		return new ResponseEntity<Administrator>(adminService.getOne(username), HttpStatus.OK);
 	}
-	
 
-	
-	
 	@PostMapping(headers = { "content-type=application/json" })
-	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request){
+	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request) {
 		String recStr = adminService.save(admin);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
@@ -57,8 +56,8 @@ public class AdministratorController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
-	@PutMapping( headers = { "content-type=application/json" })
+
+	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Administrator admin, HttpServletRequest request) {
 		String recStr = adminService.edit(admin);
 		if (recStr.contains("Greska")) {
@@ -69,9 +68,9 @@ public class AdministratorController {
 			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
 		}
 	}
-	
-	@DeleteMapping( value = "/{username}", headers = { "content-type=application/json" })
-	public ResponseEntity<String> flagNotActive(@PathVariable("username") String username, HttpServletRequest request) {
+
+	@DeleteMapping(value = "/{username}", headers = { "content-type=application/json" })
+	public ResponseEntity<String> notActive(@PathVariable("username") String username, HttpServletRequest request) {
 		String recStr = adminService.notActive(username);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);

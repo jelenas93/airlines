@@ -2,8 +2,6 @@ package com.example.airlines.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,27 +12,22 @@ import com.example.airlines.service.DestinationService;
 
 @Service
 public class DestinationServiceImpl implements DestinationService {
+
 	@Autowired
 	DestinationDAO destinationDAO;
 
 	@Override
 	public ArrayList<Destination> getAll() {
-		// TODO Auto-generated method stub
-		Iterable<Destination> iter = destinationDAO.findAll();
-		return StreamSupport.stream(iter.spliterator(), false).filter(e -> e.isActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return (ArrayList<Destination>) destinationDAO.findAll();
 	}
 
 	@Override
 	public Destination getOne(String name) {
-		// TODO Auto-generated method stub
 		return destinationDAO.findOneByName(name);
 	}
 
 	@Override
-
 	public String save(Destination object) {
-		// TODO Auto-generated method stub
 		if (object.getName() == null || "".equals(object.getName())) {
 			return "Greska, podaci nisu uneseni.";
 		}
@@ -43,7 +36,7 @@ public class DestinationServiceImpl implements DestinationService {
 			return "Greska, destinacija sa datim imenom vec postoji.";
 		}
 
-		destination = new Destination(object.getName(),true);
+		destination = new Destination(object.getName(), true);
 
 		try {
 			destinationDAO.save(destination);
@@ -59,7 +52,6 @@ public class DestinationServiceImpl implements DestinationService {
 
 	@Override
 	public String edit(Destination object) {
-		// TODO Auto-generated method stub
 		if (object.getName() == null || "".equals(object.getName())) {
 			return "Greska, podaci nisu uneseni.";
 		}
@@ -67,11 +59,12 @@ public class DestinationServiceImpl implements DestinationService {
 		if (destinationPom.isEmpty()) {
 			return "Greska, destinacija ne postoji.";
 		}
-		Destination destination=destinationPom.get();
+		Destination destination = destinationPom.get();
 		if (destinationDAO.findOneByName(object.getName()) != null) {
 			return "Greska, destinacija sa datim imenom vec postoji.";
 		}
 		destination.setName(object.getName());
+		destination.setActive(object.getActive());
 		try {
 			destinationDAO.save(destination);
 		} catch (IllegalArgumentException ex1) {
@@ -86,7 +79,6 @@ public class DestinationServiceImpl implements DestinationService {
 
 	@Override
 	public String notActive(String name) {
-		// TODO Auto-generated method stub
 		Destination destination = destinationDAO.findOneByName(name);
 
 		if (name == null || "".equals(name)) {
@@ -108,5 +100,10 @@ public class DestinationServiceImpl implements DestinationService {
 		}
 
 		return "OK, uspjesno suspendovan!";
+	}
+
+	@Override
+	public ArrayList<Destination> getAllActive() {
+		return (ArrayList<Destination>) destinationDAO.findAllByIsActive(true);
 	}
 }

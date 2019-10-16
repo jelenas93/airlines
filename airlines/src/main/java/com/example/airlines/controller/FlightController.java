@@ -23,24 +23,29 @@ import com.example.airlines.service.FlightService;
 @RestController
 @RequestMapping("/api/flight")
 public class FlightController {
-	
+
 	@Autowired
 	FlightDAO flightDAO;
-	
+
 	@Autowired
 	FlightService flightService;
-	
-	@GetMapping(value ="/{id}", produces="application/json")
-	public ResponseEntity<Flight> getOne(@PathVariable("id") Long id, HttpServletRequest request){
-		return new ResponseEntity<Flight>(flightService.getOne(id),HttpStatus.OK);
+
+	@GetMapping(value = "/{id}", produces = "application/json")
+	public ResponseEntity<Flight> getOne(@PathVariable("id") Long id, HttpServletRequest request) {
+		return new ResponseEntity<Flight>(flightService.getOne(id), HttpStatus.OK);
 	}
-	
-	@GetMapping(produces="application/json")
-	public ResponseEntity<ArrayList<Flight>> getAll(HttpServletRequest request){
-		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(),HttpStatus.OK);
+
+	@GetMapping(produces = "application/json")
+	public ResponseEntity<ArrayList<Flight>> getAll(HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.OK);
 	}
-	
-	@PostMapping( headers = { "content-type=application/json" })
+
+	@GetMapping(path = "/aktivni", produces = "application/json")
+	public ResponseEntity<ArrayList<Flight>> getAllActive(HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllActive(), HttpStatus.OK);
+	}
+
+	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Flight flight, HttpServletRequest request) {
 		String response = flightService.save(flight);
 		if (response.contains("Greska")) {
@@ -50,8 +55,8 @@ public class FlightController {
 		} else
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 	}
-	
-	@PutMapping( headers = { "content-type=application/json" })
+
+	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Flight flight, HttpServletRequest request) {
 		String response = flightService.edit(flight);
 		if (response.contains("Greska")) {
@@ -61,8 +66,8 @@ public class FlightController {
 		} else
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 	}
-	
-	@DeleteMapping(value="/{id}", headers = { "content-type=application/json" })
+
+	@DeleteMapping(value = "/{id}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("id") Long id, HttpServletRequest request) {
 		String response = flightService.notActive(id);
 		if (response.contains("Greska")) {

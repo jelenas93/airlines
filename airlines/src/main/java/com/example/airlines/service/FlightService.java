@@ -2,8 +2,10 @@ package com.example.airlines.service;
 
 import java.util.ArrayList;
 
-import com.example.airlines.model.Flight;
+//import org.springframework.stereotype.Service;
 
+import com.example.airlines.model.Flight;
+//@Service
 public interface FlightService {
 
 	public Flight getOne(Long id);
@@ -14,6 +16,8 @@ public interface FlightService {
 
 	public String save(Flight recObj);
 	
-	public String edit(Flight recObj) ;
+	public String edit(Flight recObj);
+	
+	public ArrayList<Flight> getAllActive();
 
 }

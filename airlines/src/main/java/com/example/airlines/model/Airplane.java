@@ -33,7 +33,7 @@ public class Airplane {
 		this.isActive=isActive;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return isActive;
 	}
 
