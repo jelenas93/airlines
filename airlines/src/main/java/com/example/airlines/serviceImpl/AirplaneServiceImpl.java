@@ -44,10 +44,8 @@ public class AirplaneServiceImpl implements AirplaneService{
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
-		//	log.error("[User Controller exception in POST: ]", ex1);
 			return "Exception in Airplane Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
-		//	log.error("[User Controller exception in POST: ]", ex2);
 			return "Exception in Airplane Controller POST (ex2), contact admins!";
 		}
 		return "OK, uspjesno sacuvano!";
@@ -70,10 +68,8 @@ public class AirplaneServiceImpl implements AirplaneService{
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
-		//	log.error("[Server Controller exception in PUT: ]", ex1);
 			return "Exception in Airplane Controller PUT (ex1), contact admins!";
 		} catch (Exception ex2) {
-		//	log.error("[Server Controller exception in PUT: ]", ex2);
 			return "Exception in Airplane Controller PUT (ex2), contact admins!";
 		}
 		return "OK, uspjesno sacuvano!";
@@ -93,10 +89,8 @@ public class AirplaneServiceImpl implements AirplaneService{
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
-		//	log.error("[User Controller exception in DELETE: ]", ex1);
 			return "Exception in Airplane Controller DELETE (ex1), contact admins!";
 		} catch (Exception ex2) {
-		//	log.error("[User Controller exception in DELETE: ]", ex2);
 			return "Exception in Airplane Controller DELETE (ex2), contact admins!";
 		}
 
