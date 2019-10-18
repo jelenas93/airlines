@@ -58,7 +58,6 @@ public class DestinationController {
 
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Destination destination, HttpServletRequest request) {
-
 		String recStr = destinationService.edit(destination);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
