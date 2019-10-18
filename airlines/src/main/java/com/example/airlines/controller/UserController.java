@@ -31,23 +31,39 @@ public class UserController {
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAll(HttpServletRequest request) {
-		return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
+		if (request.getSession().getAttribute("supervizor") != null) {
+			return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<ArrayList<User>>(HttpStatus.BAD_REQUEST);
+		}
 	}
-	
-	@GetMapping(path="/aktivni", produces = "application/json")
+
+	@GetMapping(path = "/aktivni", produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAllActive(HttpServletRequest request) {
-		return new ResponseEntity<ArrayList<User>>(userService.getAllActive(), HttpStatus.OK);
+		if (request.getSession().getAttribute("supervizor") != null) {
+			return new ResponseEntity<ArrayList<User>>(userService.getAllActive(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<ArrayList<User>>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
-	// @GetMapping(value = "/{username}", produces="aplication/json")
 	public ResponseEntity<User> getOne(@PathVariable("username") String name, HttpServletRequest request) {
-		return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
+		if (request.getSession().getAttribute("supervizor") != null) {
+			return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody User user, HttpServletRequest request) {
-		String response = userService.save(user);
+		String response;
+		if (request.getSession().getAttribute("admin") != null) {
+			response = userService.save(user);
+		} else {
+			response = "Greska";
+		}
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -58,13 +74,18 @@ public class UserController {
 
 	@DeleteMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("username") String name, HttpServletRequest request) {
-		String recStr = userService.notActive(name);
-		if (recStr.contains("Greska")) {
-			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
-		} else if (recStr.contains("Exception")) {
-			return new ResponseEntity<String>(recStr, HttpStatus.INTERNAL_SERVER_ERROR);
+		String response;
+		if (request.getSession().getAttribute("supervizor") != null) {
+			response = userService.notActive(name);
 		} else {
-			return new ResponseEntity<String>(recStr, HttpStatus.ACCEPTED);
+			response = "Greska";
+		}
+		if (response.contains("Greska")) {
+			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
+		} else if (response.contains("Exception")) {
+			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		} else {
+			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}
 }

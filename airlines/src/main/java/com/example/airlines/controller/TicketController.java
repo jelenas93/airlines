@@ -21,22 +21,30 @@ import com.example.airlines.service.TicketService;
 @RestController
 @RequestMapping("/api/ticket")
 public class TicketController {
-	
+
 	@Autowired
 	TicketDAO ticketDAO;
-		
+
 	@Autowired
 	TicketService ticketService;
-	
-	
-	@GetMapping(value="/{username}", produces = "application/json")
-	public ResponseEntity<ArrayList<Ticket>> getAll(@PathVariable("username") String name ,HttpServletRequest request) {
-		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
+
+	@GetMapping(value = "/{username}", produces = "application/json")
+	public ResponseEntity<ArrayList<Ticket>> getAll(@PathVariable("username") String name, HttpServletRequest request) {
+		if (request.getSession().getAttribute("user") != null) {
+			return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
+		} else
+			return new ResponseEntity<ArrayList<Ticket>>(HttpStatus.BAD_REQUEST);
+
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
-	public ResponseEntity<String> save(@RequestBody Ticket ticket, HttpServletRequest request){
-		String response=ticketService.save(ticket);
+	public ResponseEntity<String> save(@RequestBody Ticket ticket, HttpServletRequest request) {
+		String response;
+		if (request.getSession().getAttribute("user") != null) {
+			response = ticketService.save(ticket);
+		} else {
+			response = "Greska";
+		}
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
