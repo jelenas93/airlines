@@ -47,7 +47,14 @@ public class AirplaneController {
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Airplane airplane, HttpServletRequest request) {
-		String recStr = airplaneService.save(airplane);
+		
+		String recStr;
+		if(request.getSession().getAttribute("admin")!=null || request.getSession().getAttribute("supervizor")!=null) {
+			recStr = airplaneService.save(airplane);
+		 
+		}else {
+			recStr="Greska";
+		}
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -59,7 +66,13 @@ public class AirplaneController {
 
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Airplane airplane, HttpServletRequest request) {
-		String recStr = airplaneService.edit(airplane);
+		
+		String recStr;
+		if(request.getSession().getAttribute("supervizor")!=null) {
+			recStr = airplaneService.edit(airplane);
+		}else {
+			recStr="Greska";
+		}
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -71,7 +84,13 @@ public class AirplaneController {
 
 	@DeleteMapping(value = "/{id}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("id") Long id, HttpServletRequest request) {
-		String recStr = airplaneService.notActive(id);
+		
+		String recStr;
+		if(request.getSession().getAttribute("supervizor")!=null) {
+			recStr = airplaneService.notActive(id);
+		}else {
+			recStr="Greska";
+		}
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
