@@ -48,11 +48,18 @@ public class LoginController {
 			System.out.println("Supervizor");
 			request.getSession().setAttribute("supervizor", supervizor);
 		} else if (admin != null) {
-			System.out.println("Admin");
-			request.getSession().setAttribute("admin", admin);
+			if(admin.getActive())
+					request.getSession().setAttribute("admin", admin);
+			else
+				return new ResponseEntity<String>("Greska, administrator je suspendovan.",
+						HttpStatus.BAD_REQUEST);
+				
 		} else if (user != null) {
-			System.out.println("User");
+			if(user.getActive())
 			request.getSession().setAttribute("user", user);
+			else 
+				return new ResponseEntity<String>("Greska, korisnik je suspendovan.",
+					HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<String>("Greska, korisnicko ime ili lozinka nisu ispravni.",
 					HttpStatus.BAD_REQUEST);
