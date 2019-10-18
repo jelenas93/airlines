@@ -48,7 +48,12 @@ public class AirCompanyController {
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody AirCompany airCompany, HttpServletRequest request) {
-		String recStr = airCompanyService.save(airCompany);
+		String recStr;
+		if(request.getSession().getAttribute("supervizor")!=null) {
+			recStr = airCompanyService.save(airCompany);
+		}else {
+			recStr="Greska";
+		}
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -60,7 +65,12 @@ public class AirCompanyController {
 
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody AirCompany airCompany, HttpServletRequest request) {
-		String recStr = airCompanyService.edit(airCompany);
+		String recStr;
+		if(request.getSession().getAttribute("supervizor")!=null) {
+			recStr = airCompanyService.edit(airCompany);
+		}else {
+			recStr="Greska";
+		}
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -72,7 +82,12 @@ public class AirCompanyController {
 
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("name") String name, HttpServletRequest request) {
-		String recStr = airCompanyService.notActive(name);
+		String recStr;
+		if(request.getSession().getAttribute("supervizor")!=null) {
+			recStr = airCompanyService.notActive(name);
+		}else {
+			recStr="Greska";
+		}
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
