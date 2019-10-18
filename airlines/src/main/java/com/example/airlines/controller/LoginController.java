@@ -30,7 +30,7 @@ public class LoginController {
 	@Autowired
 	SupervizorDAO supervizorDAO;
 
-	@PostMapping(path = "/login"/* ,headers = { "content-type=application/json" } */)
+	@PostMapping(path = "/login")
 	public ResponseEntity<String> userLogin(HttpServletRequest request) {
 		System.out.println("Uslo u login");
 		String username = request.getParameter("username");
