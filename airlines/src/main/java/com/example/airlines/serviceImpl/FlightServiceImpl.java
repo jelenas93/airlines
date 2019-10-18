@@ -17,6 +17,7 @@ import com.example.airlines.model.Airplane;
 import com.example.airlines.model.Destination;
 import com.example.airlines.model.Flight;
 import com.example.airlines.service.FlightService;
+
 @Service
 @Profile("default")
 public class FlightServiceImpl implements FlightService {
@@ -63,9 +64,8 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public String save(Flight recObj) {
-		if (recObj.getAirplane() == null || recObj.getDestination() == null
-				|| recObj.getAirCompany() == null || recObj.getFlightDate() == null
-				|| "".equals(recObj.getPrice() + "") || recObj.getPrice()<=0) {
+		if (recObj.getAirplane() == null || recObj.getDestination() == null || recObj.getAirCompany() == null
+				|| recObj.getFlightDate() == null || "".equals(recObj.getPrice() + "") || recObj.getPrice() <= 0) {
 			return "Greska, niste unijeli sve podatke.";
 		}
 
@@ -81,9 +81,10 @@ public class FlightServiceImpl implements FlightService {
 		if (airCompany == null) {
 			return "Greska, ne postoji unesena avio kompanija.";
 		}
-		//kad kreiram let valjda mjesta nisu rezervisana, vec tek kad se karte kupuju mjesta se popunjavaju
-		Flight flight = new Flight(airplane.get(), 0, destination,
-				airCompany, recObj.getFlightDate(), recObj.getPrice(), true);
+		// kad kreiram let valjda mjesta nisu rezervisana, vec tek kad se karte kupuju
+		// mjesta se popunjavaju
+		Flight flight = new Flight(airplane.get(), 0, destination, airCompany, recObj.getFlightDate(),
+				recObj.getPrice(), true);
 		try {
 			flightDAO.save(flight);
 		} catch (IllegalArgumentException ex1) {
@@ -97,9 +98,9 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public String edit(Flight recObj) {
-		if (recObj.getAirplane() == null || "".equals(recObj.getSeatReserved()) || recObj.getSeatReserved()<0 
+		if (recObj.getAirplane() == null || "".equals(recObj.getSeatReserved() + "") || recObj.getSeatReserved() < 0
 				|| recObj.getDestination() == null || recObj.getAirCompany() == null || recObj.getFlightDate() == null
-				|| "".equals(recObj.getPrice() + "") || recObj.getPrice()<=0) {
+				|| "".equals(recObj.getPrice() + "") || recObj.getPrice() <= 0) {
 			return "Greska, niste unijeli sve podatke.";
 		}
 		Optional<Airplane> airplane = airplaneDAO.findById(recObj.getAirplane().getId());
@@ -118,12 +119,12 @@ public class FlightServiceImpl implements FlightService {
 		if (flight.get() == null) {
 			return "Greska, ne postoji dati let.";
 		}
-		
-		int brojMogucihMjesta=airplane.get().getSeats();
-		if(recObj.getSeatReserved()>brojMogucihMjesta) {
+
+		int brojMogucihMjesta = airplane.get().getSeats();
+		if (recObj.getSeatReserved() > brojMogucihMjesta) {
 			return "Greska, ne mozete rezervisati više mjesta nego što ih ima u avionu.";
 		}
-		
+
 		flight.get().setAirplane(airplane.get());
 		flight.get().setSeatReserved(recObj.getSeatReserved());
 		flight.get().setDestination(destination);
@@ -140,24 +141,24 @@ public class FlightServiceImpl implements FlightService {
 		}
 		return "OK, uspjesno ste izmjenili let.";
 	}
-	
-	public ArrayList<Flight> getAllByAirCompany_Name(String name){
+
+	public ArrayList<Flight> getAllByAirCompany_Name(String name) {
 		return flightDAO.findAllByAirCompany_Name(name);
 	}
-	
-	public ArrayList<Flight> findAllByDestination_Name(String name){
+
+	public ArrayList<Flight> findAllByDestination_Name(String name) {
 		return flightDAO.findAllByDestination_Name(name);
 	}
-	
-	public ArrayList<Flight> findAllByAirplane_Brand(String brand){
+
+	public ArrayList<Flight> findAllByAirplane_Brand(String brand) {
 		return flightDAO.findAllByAirplane_Brand(brand);
 	}
-	
-	public ArrayList<Flight> findAllByFlightDate(Date date){
+
+	public ArrayList<Flight> findAllByFlightDate(Date date) {
 		return flightDAO.findAllByFlightDate(date);
 	}
-	
-	public ArrayList<Flight> findAllByPrice(Double price){
+
+	public ArrayList<Flight> findAllByPrice(Double price) {
 		return flightDAO.findAllByPrice(price);
 	}
 
@@ -165,6 +166,5 @@ public class FlightServiceImpl implements FlightService {
 	public ArrayList<Flight> getAllActive() {
 		return (ArrayList<Flight>) flightDAO.findAllByIsActive(true);
 	}
-
 
 }
