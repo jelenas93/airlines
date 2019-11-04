@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.dao.AirCompanyDAO;
+import com.example.airlines.dao.SupervizorDAO;
+import com.example.airlines.dao.UserDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.model.AirCompany;
+import com.example.airlines.model.Supervizor;
+import com.example.airlines.model.User;
 import com.example.airlines.service.AdministratorService;
 
 @Service
@@ -19,6 +23,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 	
 	@Autowired
 	AirCompanyDAO airCompanyDAO;
+	
+	@Autowired
+	SupervizorDAO supervizorDAO;
+	
+	@Autowired
+	UserDAO userDAO;
 
 	@Override
 	public ArrayList<Administrator> getAll() {
@@ -47,11 +57,14 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, podaci nisu uneseni.";
 		}
 		AirCompany aircompany = airCompanyDAO.findOneByName(object.getAirCompany().getName());
-		Administrator admin = adminDAO.findOneByUsername(object.getUsername());
+		User user = userDAO.findOneByUsername(object.getUsername());
+		Administrator admin=adminDAO.findOneByUsername(object.getUsername());
+		Supervizor supervizor=supervizorDAO.findOneByUsername(object.getUsername());
+		
 		if (aircompany == null) {
 			return "Greska, ne postoji unesena avio kompanuja.";
 		}
-		if (admin != null) {
+		if (admin != null || user != null || supervizor != null) {
 			return "Greska, korisnik sa datim username-om vec postoji.";
 		}
 

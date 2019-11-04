@@ -32,45 +32,32 @@ public class LoginController {
 
 	@PostMapping(path = "/login")
 	public ResponseEntity<String> userLogin(HttpServletRequest request) {
-		System.out.println("Uslo u login");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		System.out.println("Prijava " + username + " password " + password);
 		if ("".equals(username) || "".equals(password)) {
-			System.out.println("Niste unijeli podatke");
 			return new ResponseEntity<String>("Greska, nisu uneseni podaci.", HttpStatus.BAD_REQUEST);
 		}
-
 		User user = userDAO.findOneByUsernameAndPassword(username, password);
 		Administrator admin = adminDAO.findOneByUsernameAndPassword(username, password);
 		Supervizor supervizor = supervizorDAO.findOneByUsernameAndPassword(username, password);
 		if (supervizor != null) {
-			System.out.println("Supervizor");
 			request.getSession().setAttribute("supervizor", supervizor);
 		} else if (admin != null) {
-			if(admin.getActive())
-					request.getSession().setAttribute("admin", admin);
+			if (admin.getActive())
+				request.getSession().setAttribute("admin", admin);
 			else
-				return new ResponseEntity<String>("Greska, administrator je suspendovan.",
-						HttpStatus.BAD_REQUEST);
-				
+				return new ResponseEntity<String>("Greska, administrator je suspendovan.", HttpStatus.BAD_REQUEST);
+
 		} else if (user != null) {
-			if(user.getActive())
-			request.getSession().setAttribute("user", user);
-			else 
-				return new ResponseEntity<String>("Greska, korisnik je suspendovan.",
-					HttpStatus.BAD_REQUEST);
+			if (user.getActive())
+				request.getSession().setAttribute("user", user);
+			else
+				return new ResponseEntity<String>("Greska, korisnik je suspendovan.", HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<String>("Greska, korisnicko ime ili lozinka nisu ispravni.",
 					HttpStatus.BAD_REQUEST);
 		}
-		/*
-		 * try { request.login(username, password); } catch (Exception e) {
-		 * e.printStackTrace(); return new
-		 * ResponseEntity<String>("Greska, vec ste ulogovani.", HttpStatus.BAD_REQUEST);
-		 * }
-		 */
-
+		System.out.println("Sesija "+request.getSession().getId());
 		return new ResponseEntity<String>("OK, uspjesno ste se prijavili na sistem.", HttpStatus.OK);
 	}
 
