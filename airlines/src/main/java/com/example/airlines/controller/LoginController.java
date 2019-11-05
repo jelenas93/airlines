@@ -30,7 +30,7 @@ public class LoginController {
 	@Autowired
 	SupervizorDAO supervizorDAO;
 
-	@PostMapping(path = "/login")
+	/*@PostMapping(path = "/login")
 	public ResponseEntity<String> userLogin(HttpServletRequest request) {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -60,5 +60,5 @@ public class LoginController {
 		System.out.println("Sesija "+request.getSession().getId());
 		return new ResponseEntity<String>("OK, uspjesno ste se prijavili na sistem.", HttpStatus.OK);
 	}
-
+*/
 }

@@ -31,11 +31,11 @@ public class UserController {
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAll(HttpServletRequest request) {
-		if (request.getSession().getAttribute("supervizor") != null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) {
 			return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
-		} else {
+	/*	} else {
 			return new ResponseEntity<ArrayList<User>>(HttpStatus.BAD_REQUEST);
-		}
+		}*/
 	}
 
 	@GetMapping(path = "/aktivni", produces = "application/json")
@@ -59,11 +59,11 @@ public class UserController {
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody User user, HttpServletRequest request) {
 		String response;
-		if (request.getSession().getAttribute("admin") != null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) { //supervizor samo za testiranje
 			response = userService.save(user);
-		} else {
+	/*	} else {
 			response = "Greska";
-		}
+		}*/
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
