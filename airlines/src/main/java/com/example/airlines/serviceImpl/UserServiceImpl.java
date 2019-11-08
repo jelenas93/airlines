@@ -3,6 +3,7 @@ package com.example.airlines.serviceImpl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AdministratorDAO;
@@ -24,6 +25,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	AdministratorDAO adminDAO;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 	@Override
 	public ArrayList<User> getAll() {
@@ -45,7 +50,7 @@ public class UserServiceImpl implements UserService {
 		Supervizor supervizor=supervizorDAO.findOneByUsername(recObj.getUsername());
 		if (user != null || admin !=null || supervizor != null)
 			return "Greska, korisnik sa datim username-om vec postoji.";
-		user = new User(recObj.getUsername(), recObj.getPassword(), recObj.getMail(), true);
+		user = new User(recObj.getUsername(), bCryptPasswordEncoder.encode(recObj.getPassword()), recObj.getMail(), true);
 		try {
 			userDAO.save(user);
 		} catch (IllegalArgumentException ex1) {

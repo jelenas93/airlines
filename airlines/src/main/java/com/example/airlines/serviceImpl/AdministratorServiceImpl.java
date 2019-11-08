@@ -3,6 +3,7 @@ package com.example.airlines.serviceImpl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AdministratorDAO;
@@ -29,6 +30,10 @@ public class AdministratorServiceImpl implements AdministratorService {
 	
 	@Autowired
 	UserDAO userDAO;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 	@Override
 	public ArrayList<Administrator> getAll() {
@@ -68,7 +73,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, korisnik sa datim username-om vec postoji.";
 		}
 
-		admin = new Administrator(object.getUsername(), object.getPassword(), aircompany, true);
+		admin = new Administrator(object.getUsername(), bCryptPasswordEncoder.encode(object.getPassword()), aircompany, true);
 
 		try {
 			adminDAO.save(admin);

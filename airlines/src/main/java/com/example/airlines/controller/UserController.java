@@ -40,20 +40,20 @@ public class UserController {
 
 	@GetMapping(path = "/aktivni", produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAllActive(HttpServletRequest request) {
-		if (request.getSession().getAttribute("supervizor") != null) {
+		//if (request.getSession().getAttribute("supervizor") != null) {
 			return new ResponseEntity<ArrayList<User>>(userService.getAllActive(), HttpStatus.OK);
-		} else {
+	/*	} else {
 			return new ResponseEntity<ArrayList<User>>(HttpStatus.BAD_REQUEST);
-		}
+		}*/
 	}
 
 	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<User> getOne(@PathVariable("username") String name, HttpServletRequest request) {
-		if (request.getSession().getAttribute("supervizor") != null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) {
 			return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
-		} else {
+	/*	} else {
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
-		}
+		}*/
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
@@ -75,11 +75,11 @@ public class UserController {
 	@DeleteMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("username") String name, HttpServletRequest request) {
 		String response;
-		if (request.getSession().getAttribute("supervizor") != null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) {
 			response = userService.notActive(name);
-		} else {
+	/*	} else {
 			response = "Greska";
-		}
+		}*/
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

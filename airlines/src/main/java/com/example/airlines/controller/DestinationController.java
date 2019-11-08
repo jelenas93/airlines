@@ -26,6 +26,7 @@ public class DestinationController {
 
 	@Autowired
 	DestinationDAO destinationDAO;
+
 	@Autowired
 	DestinationService destinationService;
 
@@ -47,12 +48,13 @@ public class DestinationController {
 	@PostMapping(produces = "application/json")
 	public ResponseEntity<String> save(@RequestBody Destination destination, HttpServletRequest request) {
 		String recStr;
-		if(request.getSession().getAttribute("admin")!=null || request.getSession().getAttribute("supervizor")!=null) {
-		 recStr = destinationService.save(destination);
-		 
-		}else {
-			recStr="Greska";
-		}
+	//	if (request.getSession().getAttribute("admin") != null
+		//		|| request.getSession().getAttribute("supervizor") != null) {
+			recStr = destinationService.save(destination);
+/*
+		} else {
+			recStr = "Greska";
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -65,11 +67,11 @@ public class DestinationController {
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Destination destination, HttpServletRequest request) {
 		String recStr;
-		if(request.getSession().getAttribute("supervizor")!=null) {
-	    recStr = destinationService.edit(destination);
-		}else {
-			recStr="Greska";
-		}
+//		if (request.getSession().getAttribute("supervizor") != null) {
+			recStr = destinationService.edit(destination);
+/*		} else {
+			recStr = "Greska";
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -81,13 +83,12 @@ public class DestinationController {
 
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("name") String name, HttpServletRequest request) {
-		
 		String recStr;
-		if(request.getSession().getAttribute("supervizor")!=null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) {
 			recStr = destinationService.notActive(name);
-		}else {
-			recStr="Greska";
-		}
+	/*	} else {
+			recStr = "Greska";
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {

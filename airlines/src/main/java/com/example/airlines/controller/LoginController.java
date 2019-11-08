@@ -1,27 +1,128 @@
 package com.example.airlines.controller;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.example.airlines.dao.AdministratorDAO;
-import com.example.airlines.dao.SupervizorDAO;
-import com.example.airlines.dao.UserDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.model.Supervizor;
 import com.example.airlines.model.User;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
 public class LoginController {
+	
+	public static boolean user=false;
+	public static boolean admin=false;
+	public static boolean supervizor=false;
+	
 
-	@Autowired
+	@PostMapping(value = "/loginUser")
+	public ResponseEntity<String> userLogIn(@RequestBody User reqUser, HttpServletRequest request) {
+		System.out.println("Uslo vuj");
+		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
+				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
+			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
+		}
+		try {
+			request.login(reqUser.getUsername(), reqUser.getPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
+		}
+		user=true;
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/loginSupervizor")
+	public ResponseEntity<String> supervizorLogIn(@RequestBody Supervizor reqUser, HttpServletRequest request) {
+		System.out.println("Uslo vuj");
+		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
+				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
+			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
+		}
+		try {
+			request.login(reqUser.getUsername(), reqUser.getPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
+		}
+		supervizor=true;
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/loginAdmin")
+	public ResponseEntity<String> adnimLogIn(@RequestBody Administrator reqUser, HttpServletRequest request) {
+		System.out.println("Uslo vuj");
+		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
+				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
+			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
+		}
+		try {
+			request.login(reqUser.getUsername(), reqUser.getPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
+		}
+		admin=true;
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/isAuthenticatedUser")
+	public ResponseEntity<String> userLogIn(HttpServletRequest request) {
+		System.out.println("Uslo vuj");
+		if (SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
+			return new ResponseEntity<String>("OK", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("NO", HttpStatus.FORBIDDEN);
+		}
+	}
+	
+	@GetMapping(value = "/isAuthenticatedSupervizor")
+	public ResponseEntity<String> supervizorLogIn(HttpServletRequest request) {
+		System.out.println("Uslo vuj");
+		if (SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
+			return new ResponseEntity<String>("OK", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("NO", HttpStatus.FORBIDDEN);
+		}
+	}
+	
+	@GetMapping(value = "/isAuthenticatedAdmin")
+	public ResponseEntity<String> adminLogIn(HttpServletRequest request) {
+		System.out.println("Uslo vuj");
+		if (SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
+			return new ResponseEntity<String>("OK", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("NO", HttpStatus.FORBIDDEN);
+		}
+	}
+
+	@GetMapping(value = "/logout")
+	public ResponseEntity<String> logout(HttpServletRequest request) {
+		try {
+			request.logout();
+			return new ResponseEntity<String>("OK, uspjesno ste se odlogovali", HttpStatus.OK);
+		} catch (ServletException e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Greska", HttpStatus.FORBIDDEN);
+		}
+
+	}
+	
+	/*@Autowired
 	AdministratorDAO adminDAO;
 
 	@Autowired

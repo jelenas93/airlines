@@ -41,42 +41,42 @@ public class FlightController {
 
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<Flight> getOne(@PathVariable("id") Long id, HttpServletRequest request) {
-		if (request.getSession().getAttribute("supervizor") != null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) {
 			return new ResponseEntity<Flight>(flightService.getOne(id), HttpStatus.OK);
-		} else {
+	/*	} else {
 			return new ResponseEntity<Flight>(HttpStatus.BAD_REQUEST);
-		}
+		}*/
 	}
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAll(HttpServletRequest request) {
-		if (request.getSession().getAttribute("supervizor") != null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) {
 			return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.OK);
-		} else {
+	/*	} else {
 			return new ResponseEntity<ArrayList<Flight>>(HttpStatus.BAD_REQUEST);
-		}
+		}*/
 	}
 
 	@GetMapping(path = "/aktivni", produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAllActive(HttpServletRequest request) {
-		if (request.getSession().getAttribute("supervizor") != null) {
+	//	if (request.getSession().getAttribute("supervizor") != null) {
 			return new ResponseEntity<ArrayList<Flight>>(flightService.getAllActive(), HttpStatus.OK);
-		} else {
+	/*	} else {
 			return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.BAD_REQUEST);
-		}
+		}*/
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Flight flight, HttpServletRequest request) {
 		String response;
-		if (request.getSession().getAttribute("supervizor") != null
+	/*	if (request.getSession().getAttribute("supervizor") != null
 				|| (request.getSession().getAttribute("admin") != null
 						&& ((Administrator) request.getSession().getAttribute("admin")).getAirCompany()
-								.getId() == flight.getAirCompany().getId())) {
+								.getId() == flight.getAirCompany().getId())) {*/
 			response = flightService.save(flight);
-		} else {
+/*		} else {
 			response = "Greska";
-		}
+		}*/
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -88,13 +88,13 @@ public class FlightController {
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Flight flight, HttpServletRequest request) {
 		String response;
-		if (request.getSession().getAttribute("supervizor") != null
+/*		if (request.getSession().getAttribute("supervizor") != null
 				|| (request.getSession().getAttribute("admin") != null
 						&& ((Administrator) request.getSession().getAttribute("admin")).getAirCompany()
-								.getId() == flight.getAirCompany().getId())) {
+								.getId() == flight.getAirCompany().getId())) {*/
 			response = flightService.edit(flight);
-		} else
-			response = "Greska";
+	/*	} else
+			response = "Greska";*/
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -106,15 +106,15 @@ public class FlightController {
 	@DeleteMapping(value = "/{id}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("id") Long id, HttpServletRequest request) {
 		String response;
-		Flight flight = flightDAO.findOneById(id);
-		if (request.getSession().getAttribute("supervizor") != null
+	//	Flight flight = flightDAO.findOneById(id);
+	/*	if (request.getSession().getAttribute("supervizor") != null
 				|| (request.getSession().getAttribute("admin") != null
 						&& ((Administrator) request.getSession().getAttribute("admin")).getAirCompany()
-								.getId() == flight.getAirCompany().getId())) {
+								.getId() == flight.getAirCompany().getId())) {*/
 			response = flightService.notActive(id);
-		} else {
+	/*	} else {
 			response = "Greska";
-		}
+		}*/
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

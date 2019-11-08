@@ -48,12 +48,12 @@ public class AdministratorController {
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request) {
 		String recStr;
-		if( request.getSession().getAttribute("supervizor")!=null) {
+	//	if( request.getSession().getAttribute("supervizor")!=null) {
 			recStr = adminService.save(admin);
-		 
+/*		 
 		}else {
 			recStr="Greska";
-		}
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -66,11 +66,11 @@ public class AdministratorController {
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Administrator admin, HttpServletRequest request) {
 		String recStr;
-		if(request.getSession().getAttribute("supervizor")!=null) {
+//		if(request.getSession().getAttribute("supervizor")!=null) {
 			recStr = adminService.edit(admin);
-		}else {
+	/*	}else {
 			recStr="Greska";
-		}
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -83,11 +83,11 @@ public class AdministratorController {
 	@DeleteMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("username") String username, HttpServletRequest request) {
 		String recStr;
-		if(request.getSession().getAttribute("supervizor")!=null) {
+	//	if(request.getSession().getAttribute("supervizor")!=null) {
 			recStr = adminService.notActive(username);
-		}else {
+	/*	}else {
 			recStr="Greska";
-		}
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {

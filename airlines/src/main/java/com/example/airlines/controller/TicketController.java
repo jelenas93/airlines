@@ -30,21 +30,21 @@ public class TicketController {
 
 	@GetMapping(value = "/{username}", produces = "application/json")
 	public ResponseEntity<ArrayList<Ticket>> getAll(@PathVariable("username") String name, HttpServletRequest request) {
-		if (request.getSession().getAttribute("user") != null) {
+	//	if (request.getSession().getAttribute("user") != null) {
 			return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
-		} else
+	/*	} else
 			return new ResponseEntity<ArrayList<Ticket>>(HttpStatus.BAD_REQUEST);
-
+*/
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Ticket ticket, HttpServletRequest request) {
 		String response;
-		if (request.getSession().getAttribute("user") != null) {
+	//	if (request.getSession().getAttribute("user") != null) {
 			response = ticketService.save(ticket);
-		} else {
+	/*	} else {
 			response = "Greska";
-		}
+		}*/
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

@@ -42,18 +42,17 @@ public class AirCompanyController {
 
 	@GetMapping(value = "/{name}", produces = "application/json")
 	public ResponseEntity<AirCompany> getOne(@PathVariable("name") String name, HttpServletRequest request) {
-
 		return new ResponseEntity<AirCompany>(airCompanyService.getOne(name), HttpStatus.OK);
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody AirCompany airCompany, HttpServletRequest request) {
 		String recStr;
-		if(request.getSession().getAttribute("supervizor")!=null) {
+	//	if(request.getSession().getAttribute("supervizor")!=null) {
 			recStr = airCompanyService.save(airCompany);
-		}else {
+	/*	}else {
 			recStr="Greska";
-		}
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -66,11 +65,11 @@ public class AirCompanyController {
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody AirCompany airCompany, HttpServletRequest request) {
 		String recStr;
-		if(request.getSession().getAttribute("supervizor")!=null) {
+	//	if(request.getSession().getAttribute("supervizor")!=null) {
 			recStr = airCompanyService.edit(airCompany);
-		}else {
+	/*	}else {
 			recStr="Greska";
-		}
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -83,11 +82,11 @@ public class AirCompanyController {
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("name") String name, HttpServletRequest request) {
 		String recStr;
-		if(request.getSession().getAttribute("supervizor")!=null) {
+	//	if(request.getSession().getAttribute("supervizor")!=null) {
 			recStr = airCompanyService.notActive(name);
-		}else {
+	/*	}else {
 			recStr="Greska";
-		}
+		}*/
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
