@@ -41,14 +41,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		if(LoginController.user) {
 			LoginController.user=false;
-		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(usersQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
 		}else if(LoginController.admin) {
 			LoginController.admin=false;
-			auth.jdbcAuthentication().usersByUsernameQuery(adminsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+			auth.jdbcAuthentication().usersByUsernameQuery(adminsQuery).authoritiesByUsernameQuery(adminsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
 		}else {
-
 			LoginController.supervizor=false;
-			auth.jdbcAuthentication().usersByUsernameQuery(supervizorsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+			auth.jdbcAuthentication().usersByUsernameQuery(supervizorsQuery).authoritiesByUsernameQuery(supervizorsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
 		}
 	}
 

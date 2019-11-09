@@ -1,12 +1,18 @@
 package com.example.airlines.controller;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.example.airlines.dao.SupervizorDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.model.Supervizor;
 import com.example.airlines.model.User;
@@ -18,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class LoginController {
 	
 	public static boolean user=false;
@@ -122,6 +128,54 @@ public class LoginController {
 
 	}
 	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	com.example.airlines.dao.UserDAO userDAO;
+	
+	@PostMapping(value = "/registerUser")
+	public ResponseEntity<String> userRegister(@RequestBody User reqUser, HttpServletRequest request) {
+		if (reqUser == null || reqUser.getMail() == null || reqUser.getPassword() == null
+				|| reqUser.getUsername() == null) {
+			return new ResponseEntity<String>("Fail, Registration Data incomplete", HttpStatus.BAD_REQUEST);
+		}
+		User user = new User();
+		user.setPassword(bCryptPasswordEncoder.encode(reqUser.getPassword()));
+		user.setUsername(reqUser.getUsername());
+		user.setMail(reqUser.getMail());
+		user.setActive(true);
+		try {
+			userDAO.save(user);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("User could not be saved!", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+
+	}
+	
+	/*@Autowired
+	SupervizorDAO supervizorDAO;
+	
+	@PostMapping(value = "/registerSupervizor")
+	public ResponseEntity<String> supervizorRegister(@RequestBody Supervizor reqUser, HttpServletRequest request) {
+		if (reqUser == null || reqUser.getPassword() == null || reqUser.getUsername() == null) {
+			return new ResponseEntity<String>("Fail, Registration Data incomplete", HttpStatus.BAD_REQUEST);
+		}
+		Supervizor user = new Supervizor();
+		user.setPassword(bCryptPasswordEncoder.encode(reqUser.getPassword()));
+		user.setUsername(reqUser.getUsername());
+		try {
+			supervizorDAO.save(user);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("User could not be saved!", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+
+	}
+	
+	*/
 	/*@Autowired
 	AdministratorDAO adminDAO;
 
