@@ -1,6 +1,5 @@
 package com.example.airlines.config;
 
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.example.airlines.controller.LoginController;
+
+//import com.example.airlines.controller.LoginController;
 
 @Configuration
 @EnableWebSecurity
@@ -35,20 +36,34 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Value("${spring.queries.admins-query}")
 	private String adminsQuery;
+	
+	@Value("${spring.queries.roleUser-query}")
+	private String rolesuserQuery;
+	
+	@Value("${spring.queries.roleAdmin-query}")
+	private String rolesadminQuery;
+	
+	@Value("${spring.queries.roleSuper-query}")
+	private String rolessuperQuery;
 
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		if(LoginController.user) {
-			LoginController.user=false;
-		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(usersQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
-		}else if(LoginController.admin) {
+		System.out.println("Kad ovde uopste udjem");
+	/*	if(LoginController.user) {
+			LoginController.user=false;*/
+			auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesuserQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+			auth.jdbcAuthentication().usersByUsernameQuery(adminsQuery).authoritiesByUsernameQuery(adminsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+			auth.jdbcAuthentication().usersByUsernameQuery(supervizorsQuery).authoritiesByUsernameQuery(rolessuperQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+			
+			/*	}else if(LoginController.admin) {
 			LoginController.admin=false;
 			auth.jdbcAuthentication().usersByUsernameQuery(adminsQuery).authoritiesByUsernameQuery(adminsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
 		}else {
+		}else if(LoginController.supervizor) {
 			LoginController.supervizor=false;
-			auth.jdbcAuthentication().usersByUsernameQuery(supervizorsQuery).authoritiesByUsernameQuery(supervizorsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
-		}
+			auth.jdbcAuthentication().usersByUsernameQuery(supervizorsQuery).authoritiesByUsernameQuery(rolessuperQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+		}*/
 	}
 
 	//// @formatter:off

@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+
 @Entity
 public class Administrator {
 
@@ -27,6 +28,10 @@ public class Administrator {
 
 	@Column(nullable = false)
 	private boolean isActive;
+	
+	@ManyToOne
+	@JoinColumn(name = "role", referencedColumnName = "id", nullable = false)
+	private Role role;
 
 	public Administrator() {
 
@@ -78,6 +83,14 @@ public class Administrator {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 }

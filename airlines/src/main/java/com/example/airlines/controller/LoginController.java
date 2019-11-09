@@ -1,5 +1,6 @@
 package com.example.airlines.controller;
 
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -12,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.example.airlines.dao.RoleDAO;
 import com.example.airlines.dao.SupervizorDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.model.Supervizor;
 import com.example.airlines.model.User;
+import com.example.airlines.model.Role;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,24 +37,28 @@ public class LoginController {
 
 	@PostMapping(value = "/loginUser")
 	public ResponseEntity<String> userLogIn(@RequestBody User reqUser, HttpServletRequest request) {
-		System.out.println("Uslo vuj");
+		System.out.println("Uslo login user 1");
 		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
+			
 			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
 		}
 		try {
+			
 			request.login(reqUser.getUsername(), reqUser.getPassword());
+			System.out.println("username "+reqUser.getUsername() +"password"+ reqUser.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
 		}
+		System.out.println("Uslo login user");
 		user=true;
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/loginSupervizor")
 	public ResponseEntity<String> supervizorLogIn(@RequestBody Supervizor reqUser, HttpServletRequest request) {
-		System.out.println("Uslo vuj");
+		//System.out.println("Uslo login supervizor");
 		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
 			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
@@ -83,9 +90,9 @@ public class LoginController {
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/isAuthenticatedUser")
+	@GetMapping(value = "/isAuthenticated")
 	public ResponseEntity<String> userLogIn(HttpServletRequest request) {
-		System.out.println("Uslo vuj");
+		System.out.println("Uslo u autentikaciju");
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
 			return new ResponseEntity<String>("OK", HttpStatus.OK);
@@ -94,7 +101,7 @@ public class LoginController {
 		}
 	}
 	
-	@GetMapping(value = "/isAuthenticatedSupervizor")
+	/*@GetMapping(value = "/isAuthenticatedSupervizor")
 	public ResponseEntity<String> supervizorLogIn(HttpServletRequest request) {
 		System.out.println("Uslo vuj");
 		if (SecurityContextHolder.getContext().getAuthentication() != null
@@ -114,7 +121,7 @@ public class LoginController {
 		} else {
 			return new ResponseEntity<String>("NO", HttpStatus.FORBIDDEN);
 		}
-	}
+	}*/
 
 	@GetMapping(value = "/logout")
 	public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -125,7 +132,6 @@ public class LoginController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Greska", HttpStatus.FORBIDDEN);
 		}
-
 	}
 	
 	@Autowired
@@ -134,29 +140,11 @@ public class LoginController {
 	@Autowired
 	com.example.airlines.dao.UserDAO userDAO;
 	
-	@PostMapping(value = "/registerUser")
-	public ResponseEntity<String> userRegister(@RequestBody User reqUser, HttpServletRequest request) {
-		if (reqUser == null || reqUser.getMail() == null || reqUser.getPassword() == null
-				|| reqUser.getUsername() == null) {
-			return new ResponseEntity<String>("Fail, Registration Data incomplete", HttpStatus.BAD_REQUEST);
-		}
-		User user = new User();
-		user.setPassword(bCryptPasswordEncoder.encode(reqUser.getPassword()));
-		user.setUsername(reqUser.getUsername());
-		user.setMail(reqUser.getMail());
-		user.setActive(true);
-		try {
-			userDAO.save(user);
-		} catch (Exception e) {
-			return new ResponseEntity<String>("User could not be saved!", HttpStatus.BAD_REQUEST);
-		}
-
-		return new ResponseEntity<String>("OK", HttpStatus.OK);
-
-	}
-	
-	/*@Autowired
+	@Autowired
 	SupervizorDAO supervizorDAO;
+	
+	@Autowired
+	RoleDAO RoleDAO;
 	
 	@PostMapping(value = "/registerSupervizor")
 	public ResponseEntity<String> supervizorRegister(@RequestBody Supervizor reqUser, HttpServletRequest request) {
@@ -164,8 +152,12 @@ public class LoginController {
 			return new ResponseEntity<String>("Fail, Registration Data incomplete", HttpStatus.BAD_REQUEST);
 		}
 		Supervizor user = new Supervizor();
+		//User user=new User();
 		user.setPassword(bCryptPasswordEncoder.encode(reqUser.getPassword()));
 		user.setUsername(reqUser.getUsername());
+	//	user.setMail(reqUser.getMail());
+		Role userRole = RoleDAO.findByRole("SUPERVIZOR");
+		user.setRole(userRole);
 		try {
 			supervizorDAO.save(user);
 		} catch (Exception e) {
@@ -175,7 +167,7 @@ public class LoginController {
 
 	}
 	
-	*/
+	
 	/*@Autowired
 	AdministratorDAO adminDAO;
 

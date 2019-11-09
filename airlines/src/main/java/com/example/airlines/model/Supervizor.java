@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Supervizor {
@@ -19,6 +21,10 @@ public class Supervizor {
 	@Column(nullable = false)
 	private String password;
 
+	@OneToOne
+	@JoinColumn(name = "role", referencedColumnName = "id", nullable = false)
+	private Role role;
+	
 	public Supervizor() {
 		super();
 	}
@@ -51,6 +57,14 @@ public class Supervizor {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 }

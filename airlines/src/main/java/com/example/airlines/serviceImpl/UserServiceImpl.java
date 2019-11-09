@@ -10,9 +10,11 @@ import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.dao.SupervizorDAO;
 import com.example.airlines.dao.UserDAO;
 import com.example.airlines.model.Administrator;
+import com.example.airlines.model.Role;
 import com.example.airlines.model.Supervizor;
 import com.example.airlines.model.User;
 import com.example.airlines.service.UserService;
+import com.example.airlines.dao.RoleDAO;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,6 +30,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private RoleDAO RoleDAO;
 
 
 	@Override
@@ -51,6 +56,8 @@ public class UserServiceImpl implements UserService {
 		if (user != null || admin !=null || supervizor != null)
 			return "Greska, korisnik sa datim username-om vec postoji.";
 		user = new User(recObj.getUsername(), bCryptPasswordEncoder.encode(recObj.getPassword()), recObj.getMail(), true);
+		Role userRole = RoleDAO.findByRole("USER");
+		user.setRole(userRole);
 		try {
 			userDAO.save(user);
 		} catch (IllegalArgumentException ex1) {
