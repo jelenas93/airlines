@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.dao.AirCompanyDAO;
+import com.example.airlines.dao.RoleDAO;
 import com.example.airlines.dao.SupervizorDAO;
 import com.example.airlines.dao.UserDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.model.AirCompany;
+import com.example.airlines.model.Role;
 import com.example.airlines.model.Supervizor;
 import com.example.airlines.model.User;
 import com.example.airlines.service.AdministratorService;
@@ -30,6 +32,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 	
 	@Autowired
 	UserDAO userDAO;
+	
+	@Autowired
+	RoleDAO RoleDAO;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -62,6 +67,10 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, podaci nisu uneseni.";
 		}
 		AirCompany aircompany = airCompanyDAO.findOneByName(object.getAirCompany().getName());
+		//AirCompany aircompany = airCompanyDAO.findOneById(object.getAirCompany().getId());
+		//System.out.println(aircompany.getId());
+		
+		//da username bude jedinstveno
 		User user = userDAO.findOneByUsername(object.getUsername());
 		Administrator admin=adminDAO.findOneByUsername(object.getUsername());
 		Supervizor supervizor=supervizorDAO.findOneByUsername(object.getUsername());
@@ -74,6 +83,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 		}
 
 		admin = new Administrator(object.getUsername(), bCryptPasswordEncoder.encode(object.getPassword()), aircompany, true);
+		Role userRole = RoleDAO.findByRole("ADMINISTRATOR");
+		admin.setRole(userRole);
 
 		try {
 			adminDAO.save(admin);
