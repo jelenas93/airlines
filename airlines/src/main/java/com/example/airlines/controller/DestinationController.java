@@ -40,7 +40,7 @@ public class DestinationController {
 		return new ResponseEntity<ArrayList<Destination>>(destinationService.getAllActive(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{name}", headers = { "content-type=application/json" })
+	@GetMapping(value = "/{name}", produces = "application/json")
 	public ResponseEntity<Destination> getOne(@PathVariable("name") String username, HttpServletRequest request) {
 		return new ResponseEntity<Destination>(destinationService.getOne(username), HttpStatus.OK);
 	}

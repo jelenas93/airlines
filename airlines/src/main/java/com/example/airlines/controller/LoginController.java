@@ -1,9 +1,6 @@
 package com.example.airlines.controller;
 
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.dao.RoleDAO;
 import com.example.airlines.dao.SupervizorDAO;
+import com.example.airlines.dao.UserDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.model.Supervizor;
 import com.example.airlines.model.User;
@@ -30,38 +29,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class LoginController {
 	
-	public static boolean user=false;
-	public static boolean admin=false;
-	public static boolean supervizor=false;
+	@Autowired
+	AdministratorDAO aDAO;
 	
+	@Autowired
+	UserDAO uDAO;
+	
+	@Autowired
+	SupervizorDAO sDAO;
 
 	@PostMapping(value = "/loginUser")
 	public ResponseEntity<String> userLogIn(@RequestBody User reqUser, HttpServletRequest request) {
-		System.out.println("Uslo login user 1");
 		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
-			
 			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
 		}
+		 User user=uDAO.findOneByUsername(reqUser.getUsername());
+		 if(user == null) {
+			return new ResponseEntity<String>("Ne postoji dati korisnik!", HttpStatus.FORBIDDEN);
+		}
 		try {
-			
 			request.login(reqUser.getUsername(), reqUser.getPassword());
 			System.out.println("username "+reqUser.getUsername() +"password"+ reqUser.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
 		}
-		System.out.println("Uslo login user");
-		user=true;
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/loginSupervizor")
 	public ResponseEntity<String> supervizorLogIn(@RequestBody Supervizor reqUser, HttpServletRequest request) {
-		//System.out.println("Uslo login supervizor");
 		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
 			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
+		}
+		 Supervizor supervizor=sDAO.findOneByUsername(reqUser.getUsername());
+		 if(supervizor == null) {
+			return new ResponseEntity<String>("Ne postoji dati supervizor!", HttpStatus.FORBIDDEN);
 		}
 		try {
 			request.login(reqUser.getUsername(), reqUser.getPassword());
@@ -69,16 +74,18 @@ public class LoginController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
 		}
-		supervizor=true;
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/loginAdmin")
 	public ResponseEntity<String> adnimLogIn(@RequestBody Administrator reqUser, HttpServletRequest request) {
-		System.out.println("Uslo vuj");
 		if (reqUser == null || reqUser.getUsername() == null || reqUser.getUsername().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("") ) {
 			return new ResponseEntity<String>("Greska, Niste unijeli podatke", HttpStatus.BAD_REQUEST);
+		}
+		 Administrator admin=aDAO.findOneByUsername(reqUser.getUsername());
+		 if(admin == null) {
+			return new ResponseEntity<String>("Ne postoji dati administrator!", HttpStatus.FORBIDDEN);
 		}
 		try {
 			request.login(reqUser.getUsername(), reqUser.getPassword());
@@ -86,7 +93,6 @@ public class LoginController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
 		}
-		admin=true;
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 
@@ -152,10 +158,8 @@ public class LoginController {
 			return new ResponseEntity<String>("Fail, Registration Data incomplete", HttpStatus.BAD_REQUEST);
 		}
 		Supervizor user = new Supervizor();
-		//User user=new User();
 		user.setPassword(bCryptPasswordEncoder.encode(reqUser.getPassword()));
 		user.setUsername(reqUser.getUsername());
-	//	user.setMail(reqUser.getMail());
 		Role userRole = RoleDAO.findByRole("SUPERVIZOR");
 		user.setRole(userRole);
 		try {
