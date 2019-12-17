@@ -19,5 +19,9 @@ public interface FlightService {
 	public String edit(Flight recObj);
 	
 	public ArrayList<Flight> getAllActive();
+	
+	public ArrayList<Flight> getAllByAirCompany_Name(String name);
+	
+	public ArrayList<Flight> getAllByAirCompany_Id(Long id);
 
 }

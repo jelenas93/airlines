@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.airlines.dao.AdministratorDAO;
 import com.example.airlines.model.Administrator;
 import com.example.airlines.service.AdministratorService;
 
@@ -25,10 +24,12 @@ import com.example.airlines.service.AdministratorService;
 @RequestMapping("/api/administrator")
 public class AdministratorController {
 
+	private AdministratorService adminService;
+	
 	@Autowired
-	AdministratorDAO adminDAO;
-	@Autowired
-	AdministratorService adminService;
+	public AdministratorController(AdministratorService adminService) {
+		this.adminService=adminService;
+	}
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<Administrator>> getAll(HttpServletRequest request) {
@@ -47,13 +48,7 @@ public class AdministratorController {
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Administrator admin, HttpServletRequest request) {
-		String recStr;
-	//	if( request.getSession().getAttribute("supervizor")!=null) {
-			recStr = adminService.save(admin);
-/*		 
-		}else {
-			recStr="Greska";
-		}*/
+		String	recStr = adminService.save(admin);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -65,12 +60,7 @@ public class AdministratorController {
 
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Administrator admin, HttpServletRequest request) {
-		String recStr;
-//		if(request.getSession().getAttribute("supervizor")!=null) {
-			recStr = adminService.edit(admin);
-	/*	}else {
-			recStr="Greska";
-		}*/
+		String recStr = adminService.edit(admin);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -82,12 +72,7 @@ public class AdministratorController {
 
 	@DeleteMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("username") String username, HttpServletRequest request) {
-		String recStr;
-	//	if(request.getSession().getAttribute("supervizor")!=null) {
-			recStr = adminService.notActive(username);
-	/*	}else {
-			recStr="Greska";
-		}*/
+		String recStr = adminService.notActive(username);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {

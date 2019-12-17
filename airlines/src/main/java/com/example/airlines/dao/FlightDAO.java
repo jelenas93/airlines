@@ -15,11 +15,13 @@ public interface FlightDAO extends CrudRepository<Flight, Long> {
 	
 	public ArrayList<Flight> findAllByAirplane_Brand(String brand);
 	
-	public ArrayList<Flight> findAllByFlightDate(Date date); //ovdje provjeriti da li je Date il nesto drugo
+	public ArrayList<Flight> findAllByFlightDate(Date date); 
 	
 	public ArrayList<Flight> findAllByPrice(Double price);
 
 	public Flight findOneById(Long id);
 	
 	public ArrayList<Flight> findAllByIsActive(Boolean bool);
+	
+	public ArrayList<Flight> findAllByAirCompany_Id(Long id);
 }

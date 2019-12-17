@@ -52,7 +52,6 @@ public class LoginController {
 			request.login(reqUser.getUsername(), reqUser.getPassword());
 			System.out.println("username "+reqUser.getUsername() +"password"+ reqUser.getPassword());
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
@@ -71,7 +70,6 @@ public class LoginController {
 		try {
 			request.login(reqUser.getUsername(), reqUser.getPassword());
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
@@ -90,7 +88,6 @@ public class LoginController {
 		try {
 			request.login(reqUser.getUsername(), reqUser.getPassword());
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<String>("Vec ste ulogovani!", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
@@ -98,7 +95,6 @@ public class LoginController {
 
 	@GetMapping(value = "/isAuthenticated")
 	public ResponseEntity<String> userLogIn(HttpServletRequest request) {
-		System.out.println("Uslo u autentikaciju");
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
 			return new ResponseEntity<String>("OK", HttpStatus.OK);
@@ -106,28 +102,6 @@ public class LoginController {
 			return new ResponseEntity<String>("NO", HttpStatus.FORBIDDEN);
 		}
 	}
-	
-	/*@GetMapping(value = "/isAuthenticatedSupervizor")
-	public ResponseEntity<String> supervizorLogIn(HttpServletRequest request) {
-		System.out.println("Uslo vuj");
-		if (SecurityContextHolder.getContext().getAuthentication() != null
-				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
-			return new ResponseEntity<String>("OK", HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>("NO", HttpStatus.FORBIDDEN);
-		}
-	}
-	
-	@GetMapping(value = "/isAuthenticatedAdmin")
-	public ResponseEntity<String> adminLogIn(HttpServletRequest request) {
-		System.out.println("Uslo vuj");
-		if (SecurityContextHolder.getContext().getAuthentication() != null
-				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
-			return new ResponseEntity<String>("OK", HttpStatus.OK);
-		} else {
-			return new ResponseEntity<String>("NO", HttpStatus.FORBIDDEN);
-		}
-	}*/
 
 	@GetMapping(value = "/logout")
 	public ResponseEntity<String> logout(HttpServletRequest request) {
@@ -170,46 +144,4 @@ public class LoginController {
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 
 	}
-	
-	
-	/*@Autowired
-	AdministratorDAO adminDAO;
-
-	@Autowired
-	UserDAO userDAO;
-
-	@Autowired
-	SupervizorDAO supervizorDAO;
-
-	/*@PostMapping(path = "/login")
-	public ResponseEntity<String> userLogin(HttpServletRequest request) {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		if ("".equals(username) || "".equals(password)) {
-			return new ResponseEntity<String>("Greska, nisu uneseni podaci.", HttpStatus.BAD_REQUEST);
-		}
-		User user = userDAO.findOneByUsernameAndPassword(username, password);
-		Administrator admin = adminDAO.findOneByUsernameAndPassword(username, password);
-		Supervizor supervizor = supervizorDAO.findOneByUsernameAndPassword(username, password);
-		if (supervizor != null) {
-			request.getSession().setAttribute("supervizor", supervizor);
-		} else if (admin != null) {
-			if (admin.getActive())
-				request.getSession().setAttribute("admin", admin);
-			else
-				return new ResponseEntity<String>("Greska, administrator je suspendovan.", HttpStatus.BAD_REQUEST);
-
-		} else if (user != null) {
-			if (user.getActive())
-				request.getSession().setAttribute("user", user);
-			else
-				return new ResponseEntity<String>("Greska, korisnik je suspendovan.", HttpStatus.BAD_REQUEST);
-		} else {
-			return new ResponseEntity<String>("Greska, korisnicko ime ili lozinka nisu ispravni.",
-					HttpStatus.BAD_REQUEST);
-		}
-		System.out.println("Sesija "+request.getSession().getId());
-		return new ResponseEntity<String>("OK, uspjesno ste se prijavili na sistem.", HttpStatus.OK);
-	}
-*/
 }

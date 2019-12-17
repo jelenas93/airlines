@@ -17,14 +17,18 @@ import com.example.airlines.service.TicketService;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-	@Autowired
-	TicketDAO ticketDAO;
+	private TicketDAO ticketDAO;
 
-	@Autowired
-	FlightDAO flightDAO;
+	private FlightDAO flightDAO;
 
+	private UserDAO userDAO;
+	
 	@Autowired
-	UserDAO userDAO;
+	public TicketServiceImpl(TicketDAO ticketDAO, FlightDAO flightDAO, UserDAO userDAO) {
+		this.ticketDAO = ticketDAO;
+		this.flightDAO = flightDAO;
+		this.userDAO = userDAO;
+	}
 
 	@Override
 	public ArrayList<Ticket> getAll(String name) {
@@ -37,11 +41,6 @@ public class TicketServiceImpl implements TicketService {
 				|| recObj.getNumberOfTicket() <= 0) {
 			return "Greska, nisu uneseni svi podaci.";
 		}
-	/*	Ticket ticket = (ticketDAO.findById(recObj.getId())).get();
-
-		if (ticket != null) {
-			return "Greska, vec postoji kupljena karta.";
-		}*/
 		Optional<Flight> oFlight = (flightDAO.findById(recObj.getFlight().getId()));
 		if (oFlight.isEmpty())
 			return "Greska, ne postoji dati let.";

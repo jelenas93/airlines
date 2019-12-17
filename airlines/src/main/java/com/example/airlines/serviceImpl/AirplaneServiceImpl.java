@@ -10,35 +10,41 @@ import com.example.airlines.model.Airplane;
 import com.example.airlines.service.AirplaneService;
 
 @Service
-public class AirplaneServiceImpl implements AirplaneService{
-	
+public class AirplaneServiceImpl implements AirplaneService {
+
+	private AirplaneDAO airplaneDAO;
+
 	@Autowired
-	AirplaneDAO airplaneDAO;
-	
+	public AirplaneServiceImpl(AirplaneDAO airplaneDAO) {
+		this.airplaneDAO = airplaneDAO;
+	}
+
 	@Override
 	public ArrayList<Airplane> getAll() {
 		return (ArrayList<Airplane>) airplaneDAO.findAll();
-		
+
 	}
-	public ArrayList<Airplane> getAllByBrand(String brand){
-		return  (ArrayList<Airplane>)airplaneDAO.findAllByBrand(brand);
+
+	public ArrayList<Airplane> getAllByBrand(String brand) {
+		return (ArrayList<Airplane>) airplaneDAO.findAllByBrand(brand);
 	}
+
 	public Airplane getOneById(Long id) {
 		return (airplaneDAO.findById(id)).get();
 	}
+
 	public Airplane getOneByBrandAndSeats(Airplane airplane) {
-		return (airplaneDAO.findOneByBrandAndSeats(airplane.getBrand(),airplane.getSeats()));
+		return (airplaneDAO.findOneByBrandAndSeats(airplane.getBrand(), airplane.getSeats()));
 	}
 
 	@Override
 	public String save(Airplane object) {
-		if ( object.getSeats()<0 || object.getBrand() == null
-				|| "".equals(object.getBrand()) ) {
+		if (object.getSeats() < 0 || object.getBrand() == null || "".equals(object.getBrand())) {
 			return "Greska, podaci nisu uneseni.";
 		}
-	
-		Airplane airplane = new Airplane( object.getSeats(), object.getBrand(), true);
-		if(this.getOneByBrandAndSeats(airplane)!=null) {
+
+		Airplane airplane = new Airplane(object.getSeats(), object.getBrand(), true);
+		if (this.getOneByBrandAndSeats(airplane) != null) {
 			return "Greska, avion sa tim podacima vec postoji.";
 		}
 		try {
@@ -53,18 +59,17 @@ public class AirplaneServiceImpl implements AirplaneService{
 
 	@Override
 	public String edit(Airplane object) {
-		if (object.getBrand() == null || "".equals(object.getBrand()) 
-				|| object.getSeats()<0) {
+		if (object.getBrand() == null || "".equals(object.getBrand()) || object.getSeats() < 0) {
 			return "Greska, podaci nisu uneseni.";
 		}
 		Airplane airplane = airplaneDAO.findOneById(object.getId());
-	    if (airplane == null) {
+		if (airplane == null) {
 			return "Greska, avion sa datim podacima ne postoji.";
 		}
-		
-	    airplane.setBrand(object.getBrand());
-	    airplane.setSeats(object.getSeats());
-	    airplane.setActive(object.getActive());
+
+		airplane.setBrand(object.getBrand());
+		airplane.setSeats(object.getSeats());
+		airplane.setActive(object.getActive());
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
@@ -74,10 +79,11 @@ public class AirplaneServiceImpl implements AirplaneService{
 		}
 		return "OK, uspjesno sacuvano!";
 	}
+
 	@Override
 	public String notActive(Long id) {
 		Airplane airplane = (airplaneDAO.findById(id)).get();
-		
+
 		if (!airplaneDAO.existsById(id)) {
 			return "Greska, podaci nisu dobro uneseni.";
 		}
@@ -96,6 +102,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 
 		return "OK, uspjesno suspendovan!";
 	}
+
 	@Override
 	public ArrayList<Airplane> getAllActive() {
 		return (ArrayList<Airplane>) airplaneDAO.findAllByIsActive(true);

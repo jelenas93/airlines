@@ -19,21 +19,25 @@ import com.example.airlines.dao.RoleDAO;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	UserDAO userDAO;
-	
-	@Autowired
-	SupervizorDAO supervizorDAO;
-	
-	@Autowired
-	AdministratorDAO adminDAO;
-	
-	@Autowired
+	private UserDAO userDAO;
+
+	private SupervizorDAO supervizorDAO;
+
+	private AdministratorDAO adminDAO;
+
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	@Autowired
+
 	private RoleDAO RoleDAO;
 
+	@Autowired
+	public UserServiceImpl(UserDAO userDAO, SupervizorDAO supervizorDAO, AdministratorDAO adminDAO,
+			BCryptPasswordEncoder bCryptPasswordEncoder, com.example.airlines.dao.RoleDAO roleDAO) {
+		this.userDAO = userDAO;
+		this.supervizorDAO = supervizorDAO;
+		this.adminDAO = adminDAO;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		RoleDAO = roleDAO;
+	}
 
 	@Override
 	public ArrayList<User> getAll() {
@@ -51,11 +55,12 @@ public class UserServiceImpl implements UserService {
 				|| "".equals(recObj.getPassword()) || recObj.getMail() == null || "".equals(recObj.getMail()))
 			return "Greska, podaci nisu uneseni.";
 		User user = userDAO.findOneByUsername(recObj.getUsername());
-		Administrator admin=adminDAO.findOneByUsername(recObj.getUsername());
-		Supervizor supervizor=supervizorDAO.findOneByUsername(recObj.getUsername());
-		if (user != null || admin !=null || supervizor != null)
+		Administrator admin = adminDAO.findOneByUsername(recObj.getUsername());
+		Supervizor supervizor = supervizorDAO.findOneByUsername(recObj.getUsername());
+		if (user != null || admin != null || supervizor != null)
 			return "Greska, korisnik sa datim username-om vec postoji.";
-		user = new User(recObj.getUsername(), bCryptPasswordEncoder.encode(recObj.getPassword()), recObj.getMail(), true);
+		user = new User(recObj.getUsername(), bCryptPasswordEncoder.encode(recObj.getPassword()), recObj.getMail(),
+				true);
 		Role userRole = RoleDAO.findByRole("USER");
 		user.setRole(userRole);
 		try {
@@ -90,7 +95,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String edit(User recObj) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -103,7 +107,5 @@ public class UserServiceImpl implements UserService {
 	public ArrayList<User> getAllActive() {
 		return (ArrayList<User>) userDAO.findAllByIsActive(true);
 	}
-
-	
 
 }

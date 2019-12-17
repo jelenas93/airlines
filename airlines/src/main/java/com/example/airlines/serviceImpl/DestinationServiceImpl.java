@@ -13,8 +13,12 @@ import com.example.airlines.service.DestinationService;
 @Service
 public class DestinationServiceImpl implements DestinationService {
 
+	private DestinationDAO destinationDAO;
+	
 	@Autowired
-	DestinationDAO destinationDAO;
+	public DestinationServiceImpl(DestinationDAO destinationDAO) {
+		this.destinationDAO = destinationDAO;
+	}
 
 	@Override
 	public ArrayList<Destination> getAll() {
@@ -85,13 +89,8 @@ public class DestinationServiceImpl implements DestinationService {
 		}
 		destination.setActive(false);
 
-		try {
+		
 			destinationDAO.save(destination);
-		} catch (IllegalArgumentException ex1) {
-			return "Exception in Destination Controller DELETE (ex1), contact admins!";
-		} catch (Exception ex2) {
-			return "Exception in Destination Controller DELETE (ex2), contact admins!";
-		}
 
 		return "OK, uspjesno suspendovan!";
 	}

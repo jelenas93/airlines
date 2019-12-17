@@ -13,8 +13,12 @@ import com.example.airlines.service.AirCompanyService;
 @Service
 public class AirCompanyServiceImpl implements AirCompanyService {
 
+	private AirCompanyDAO airCompanyDAO;
+	
 	@Autowired
-	AirCompanyDAO airCompanyDAO;
+	public AirCompanyServiceImpl(AirCompanyDAO airCompanyDAO) {
+		this.airCompanyDAO = airCompanyDAO;
+	}
 
 	@Override
 	public ArrayList<AirCompany> getAll() {

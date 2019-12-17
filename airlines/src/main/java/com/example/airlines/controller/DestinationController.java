@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.airlines.dao.DestinationDAO;
 import com.example.airlines.model.Destination;
 import com.example.airlines.service.DestinationService;
 
@@ -24,11 +23,12 @@ import com.example.airlines.service.DestinationService;
 @RequestMapping("/api/destination")
 public class DestinationController {
 
-	@Autowired
-	DestinationDAO destinationDAO;
+	private DestinationService destinationService;
 
 	@Autowired
-	DestinationService destinationService;
+	public DestinationController(DestinationService destinationService) {
+		this.destinationService = destinationService;
+	}
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<Destination>> getAll(HttpServletRequest request) {
@@ -47,14 +47,7 @@ public class DestinationController {
 
 	@PostMapping(produces = "application/json")
 	public ResponseEntity<String> save(@RequestBody Destination destination, HttpServletRequest request) {
-		String recStr;
-	//	if (request.getSession().getAttribute("admin") != null
-		//		|| request.getSession().getAttribute("supervizor") != null) {
-			recStr = destinationService.save(destination);
-/*
-		} else {
-			recStr = "Greska";
-		}*/
+		String recStr = destinationService.save(destination);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -66,12 +59,7 @@ public class DestinationController {
 
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Destination destination, HttpServletRequest request) {
-		String recStr;
-//		if (request.getSession().getAttribute("supervizor") != null) {
-			recStr = destinationService.edit(destination);
-/*		} else {
-			recStr = "Greska";
-		}*/
+		String recStr = destinationService.edit(destination);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -83,12 +71,7 @@ public class DestinationController {
 
 	@DeleteMapping(value = "/{name}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("name") String name, HttpServletRequest request) {
-		String recStr;
-	//	if (request.getSession().getAttribute("supervizor") != null) {
-			recStr = destinationService.notActive(name);
-	/*	} else {
-			recStr = "Greska";
-		}*/
+		String recStr = destinationService.notActive(name);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {

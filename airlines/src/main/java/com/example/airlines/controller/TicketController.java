@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.airlines.dao.TicketDAO;
 import com.example.airlines.model.Ticket;
 import com.example.airlines.service.TicketService;
 
@@ -22,29 +21,21 @@ import com.example.airlines.service.TicketService;
 @RequestMapping("/api/ticket")
 public class TicketController {
 
+	private TicketService ticketService;
+	
 	@Autowired
-	TicketDAO ticketDAO;
-
-	@Autowired
-	TicketService ticketService;
+	public TicketController(TicketService ticketService) {
+		this.ticketService=ticketService;
+	}
 
 	@GetMapping(value = "/{username}", produces = "application/json")
 	public ResponseEntity<ArrayList<Ticket>> getAll(@PathVariable("username") String name, HttpServletRequest request) {
-	//	if (request.getSession().getAttribute("user") != null) {
-			return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
-	/*	} else
-			return new ResponseEntity<ArrayList<Ticket>>(HttpStatus.BAD_REQUEST);
-*/
+		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(name), HttpStatus.OK);
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Ticket ticket, HttpServletRequest request) {
-		String response;
-	//	if (request.getSession().getAttribute("user") != null) {
-			response = ticketService.save(ticket);
-	/*	} else {
-			response = "Greska";
-		}*/
+		String response = ticketService.save(ticket);
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

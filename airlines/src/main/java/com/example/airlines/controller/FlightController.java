@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.airlines.dao.AdministratorDAO;
-import com.example.airlines.dao.FlightDAO;
-import com.example.airlines.dao.SupervizorDAO;
-import com.example.airlines.model.Administrator;
 import com.example.airlines.model.Flight;
 import com.example.airlines.service.FlightService;
 
@@ -27,56 +23,37 @@ import com.example.airlines.service.FlightService;
 @RequestMapping("/api/flight")
 public class FlightController {
 
-	@Autowired
-	AdministratorDAO adminDAO;
+	private FlightService flightService;
 
 	@Autowired
-	SupervizorDAO supervizorDAO;
-
-	@Autowired
-	FlightDAO flightDAO;
-
-	@Autowired
-	FlightService flightService;
+	public FlightController(FlightService flightService) {
+		this.flightService = flightService;
+	}
 
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public ResponseEntity<Flight> getOne(@PathVariable("id") Long id, HttpServletRequest request) {
-	//	if (request.getSession().getAttribute("supervizor") != null) {
-			return new ResponseEntity<Flight>(flightService.getOne(id), HttpStatus.OK);
-	/*	} else {
-			return new ResponseEntity<Flight>(HttpStatus.BAD_REQUEST);
-		}*/
+		return new ResponseEntity<Flight>(flightService.getOne(id), HttpStatus.OK);
 	}
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAll(HttpServletRequest request) {
-	//	if (request.getSession().getAttribute("supervizor") != null) {
-			return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.OK);
-	/*	} else {
-			return new ResponseEntity<ArrayList<Flight>>(HttpStatus.BAD_REQUEST);
-		}*/
+		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/{name}", produces = "application/json")
+	public ResponseEntity<ArrayList<Flight>> getAllByAircomanyName(@PathVariable("name") String name, HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllByAirCompany_Name(name), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/aktivni", produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAllActive(HttpServletRequest request) {
-	//	if (request.getSession().getAttribute("supervizor") != null) {
-			return new ResponseEntity<ArrayList<Flight>>(flightService.getAllActive(), HttpStatus.OK);
-	/*	} else {
-			return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.BAD_REQUEST);
-		}*/
+		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllActive(), HttpStatus.OK);
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Flight flight, HttpServletRequest request) {
 		String response;
-	/*	if (request.getSession().getAttribute("supervizor") != null
-				|| (request.getSession().getAttribute("admin") != null
-						&& ((Administrator) request.getSession().getAttribute("admin")).getAirCompany()
-								.getId() == flight.getAirCompany().getId())) {*/
-			response = flightService.save(flight);
-/*		} else {
-			response = "Greska";
-		}*/
+		response = flightService.save(flight);
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -88,13 +65,7 @@ public class FlightController {
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Flight flight, HttpServletRequest request) {
 		String response;
-/*		if (request.getSession().getAttribute("supervizor") != null
-				|| (request.getSession().getAttribute("admin") != null
-						&& ((Administrator) request.getSession().getAttribute("admin")).getAirCompany()
-								.getId() == flight.getAirCompany().getId())) {*/
-			response = flightService.edit(flight);
-	/*	} else
-			response = "Greska";*/
+		response = flightService.edit(flight);
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -106,15 +77,7 @@ public class FlightController {
 	@DeleteMapping(value = "/{id}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("id") Long id, HttpServletRequest request) {
 		String response;
-	//	Flight flight = flightDAO.findOneById(id);
-	/*	if (request.getSession().getAttribute("supervizor") != null
-				|| (request.getSession().getAttribute("admin") != null
-						&& ((Administrator) request.getSession().getAttribute("admin")).getAirCompany()
-								.getId() == flight.getAirCompany().getId())) {*/
-			response = flightService.notActive(id);
-	/*	} else {
-			response = "Greska";
-		}*/
+		response = flightService.notActive(id);
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

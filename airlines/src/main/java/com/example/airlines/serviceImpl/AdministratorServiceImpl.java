@@ -21,24 +21,28 @@ import com.example.airlines.service.AdministratorService;
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
 
-	@Autowired
-	AdministratorDAO adminDAO;
+	private AdministratorDAO adminDAO;
 	
-	@Autowired
-	AirCompanyDAO airCompanyDAO;
+	private AirCompanyDAO airCompanyDAO;
 	
-	@Autowired
-	SupervizorDAO supervizorDAO;
+	private SupervizorDAO supervizorDAO;
 	
-	@Autowired
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	
-	@Autowired
-	RoleDAO RoleDAO;
+	private RoleDAO roleDAO;
 	
-	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+	@Autowired
+	public AdministratorServiceImpl(AdministratorDAO adminDAO, AirCompanyDAO airCompanyDAO, SupervizorDAO supervizorDAO,
+			UserDAO userDAO, com.example.airlines.dao.RoleDAO roleDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		super();
+		this.adminDAO = adminDAO;
+		this.airCompanyDAO = airCompanyDAO;
+		this.supervizorDAO = supervizorDAO;
+		this.userDAO = userDAO;
+		this.roleDAO = roleDAO;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
 
 	@Override
 	public ArrayList<Administrator> getAll() {
@@ -67,8 +71,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, podaci nisu uneseni.";
 		}
 		AirCompany aircompany = airCompanyDAO.findOneByName(object.getAirCompany().getName());
-		//AirCompany aircompany = airCompanyDAO.findOneById(object.getAirCompany().getId());
-		//System.out.println(aircompany.getId());
 		
 		//da username bude jedinstveno
 		User user = userDAO.findOneByUsername(object.getUsername());
@@ -83,9 +85,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 		}
 
 		admin = new Administrator(object.getUsername(), bCryptPasswordEncoder.encode(object.getPassword()), aircompany, true);
-		Role userRole = RoleDAO.findByRole("ADMINISTRATOR");
+		Role userRole = roleDAO.findByRole("ADMINISTRATOR");
 		admin.setRole(userRole);
-
 		try {
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {
@@ -124,7 +125,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Exception in Server Controller PUT (ex2), contact admins!";
 		}
 		return "OK, uspjesno sacuvano!";
-
 	}
 
 	@Override
@@ -137,7 +137,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, korisnik ne postoji.";
 		}
 		admin.setActive(false);
-
 		try {
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {

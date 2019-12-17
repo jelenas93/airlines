@@ -19,5 +19,6 @@ public interface AdministratorDAO extends CrudRepository<Administrator, Long> {
 	public Administrator findOneById(Long id);
 	
 	public ArrayList<Administrator> findAllByIsActive(Boolean bool);
+	
 
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.airlines.dao.UserDAO;
 import com.example.airlines.model.User;
 import com.example.airlines.service.UserService;
 
@@ -23,47 +22,31 @@ import com.example.airlines.service.UserService;
 @RequestMapping("/api/user")
 public class UserController {
 
-	@Autowired
-	UserDAO userDAO;
+	private UserService userService;
 
 	@Autowired
-	public UserService userService;
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAll(HttpServletRequest request) {
-	//	if (request.getSession().getAttribute("supervizor") != null) {
-			return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
-	/*	} else {
-			return new ResponseEntity<ArrayList<User>>(HttpStatus.BAD_REQUEST);
-		}*/
+		return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/aktivni", produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAllActive(HttpServletRequest request) {
-		//if (request.getSession().getAttribute("supervizor") != null) {
-			return new ResponseEntity<ArrayList<User>>(userService.getAllActive(), HttpStatus.OK);
-	/*	} else {
-			return new ResponseEntity<ArrayList<User>>(HttpStatus.BAD_REQUEST);
-		}*/
+		return new ResponseEntity<ArrayList<User>>(userService.getAllActive(), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<User> getOne(@PathVariable("username") String name, HttpServletRequest request) {
-	//	if (request.getSession().getAttribute("supervizor") != null) {
-			return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
-	/*	} else {
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
-		}*/
+		return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
 	}
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody User user, HttpServletRequest request) {
-		String response;
-	//	if (request.getSession().getAttribute("supervizor") != null) { //supervizor samo za testiranje
-			response = userService.save(user);
-	/*	} else {
-			response = "Greska";
-		}*/
+		String response = userService.save(user);
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -74,12 +57,7 @@ public class UserController {
 
 	@DeleteMapping(value = "/{username}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> flagNotActive(@PathVariable("username") String name, HttpServletRequest request) {
-		String response;
-	//	if (request.getSession().getAttribute("supervizor") != null) {
-			response = userService.notActive(name);
-	/*	} else {
-			response = "Greska";
-		}*/
+		String response = userService.notActive(name);
 		if (response.contains("Greska")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

@@ -22,14 +22,22 @@ import com.example.airlines.service.FlightService;
 @Profile("default")
 public class FlightServiceImpl implements FlightService {
 
+	private FlightDAO flightDAO;
+
+	private AirplaneDAO airplaneDAO;
+
+	private DestinationDAO destinationDAO;
+
+	private AirCompanyDAO airCompanyDAO;
+
 	@Autowired
-	FlightDAO flightDAO;
-	@Autowired
-	AirplaneDAO airplaneDAO;
-	@Autowired
-	DestinationDAO destinationDAO;
-	@Autowired
-	AirCompanyDAO airCompanyDAO;
+	public FlightServiceImpl(FlightDAO flightDAO, AirplaneDAO airplaneDAO, DestinationDAO destinationDAO,
+			AirCompanyDAO airCompanyDAO) {
+		this.flightDAO = flightDAO;
+		this.airplaneDAO = airplaneDAO;
+		this.destinationDAO = destinationDAO;
+		this.airCompanyDAO = airCompanyDAO;
+	}
 
 	@Override
 	public Flight getOne(Long id) {
@@ -166,5 +174,7 @@ public class FlightServiceImpl implements FlightService {
 	public ArrayList<Flight> getAllActive() {
 		return (ArrayList<Flight>) flightDAO.findAllByIsActive(true);
 	}
-
+	public ArrayList<Flight> getAllByAirCompany_Id(Long id) {
+		return (ArrayList<Flight>) flightDAO.findAllByAirCompany_Id(id);
+	}
 }

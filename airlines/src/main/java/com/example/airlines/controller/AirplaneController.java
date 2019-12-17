@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.airlines.dao.AirplaneDAO;
 import com.example.airlines.model.Airplane;
 import com.example.airlines.service.AirplaneService;
 
@@ -24,10 +23,12 @@ import com.example.airlines.service.AirplaneService;
 @RequestMapping("/api/airplane")
 public class AirplaneController {
 
+	private	AirplaneService airplaneService;
+	
 	@Autowired
-	AirplaneDAO airplaneDAO;
-	@Autowired
-	AirplaneService airplaneService;
+	public AirplaneController(AirplaneService airplaneService) {
+		this.airplaneService=airplaneService;
+	}
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<ArrayList<Airplane>> getAll(HttpServletRequest request) {
@@ -46,13 +47,7 @@ public class AirplaneController {
 
 	@PostMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> save(@RequestBody Airplane airplane, HttpServletRequest request) {	
-		String recStr;
-	//	if(request.getSession().getAttribute("admin")!=null || request.getSession().getAttribute("supervizor")!=null) {
-			recStr = airplaneService.save(airplane);
-/*		 
-		}else {
-			recStr="Greska";
-		}*/
+		String recStr = airplaneService.save(airplane);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -64,12 +59,7 @@ public class AirplaneController {
 
 	@PutMapping(headers = { "content-type=application/json" })
 	public ResponseEntity<String> edit(@RequestBody Airplane airplane, HttpServletRequest request) {	
-		String recStr;
-//		if(request.getSession().getAttribute("supervizor")!=null) {
-			recStr = airplaneService.edit(airplane);
-/*		}else {
-			recStr="Greska";
-		}*/
+		String recStr = airplaneService.edit(airplane);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
@@ -81,12 +71,7 @@ public class AirplaneController {
 
 	@DeleteMapping(value = "/{id}", headers = { "content-type=application/json" })
 	public ResponseEntity<String> notActive(@PathVariable("id") Long id, HttpServletRequest request) {
-		String recStr;
-	//	if(request.getSession().getAttribute("supervizor")!=null) {
-			recStr = airplaneService.notActive(id);
-	/*	}else {
-			recStr="Greska";
-		}*/
+		String recStr = airplaneService.notActive(id);
 		if (recStr.contains("Greska")) {
 			return new ResponseEntity<String>(recStr, HttpStatus.BAD_REQUEST);
 		} else if (recStr.contains("Exception")) {
