@@ -45,6 +45,10 @@ public class FlightController {
 	public ResponseEntity<ArrayList<Flight>> getAllByDestinationName(@PathVariable("name") String name, HttpServletRequest request) {
 		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllByDestination_Name(name), HttpStatus.OK);
 	}
+	@GetMapping(value = "/airCompany/{id}", produces = "application/json")
+	public ResponseEntity<ArrayList<Flight>> getAllByAirCompanyId(@PathVariable("id") Long id, HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllByAirCompany_Id(id), HttpStatus.OK);
+	}
 	
 	@GetMapping(path = "/aktivni", produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAllActive(HttpServletRequest request) {

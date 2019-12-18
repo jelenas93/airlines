@@ -41,7 +41,7 @@ public class AdministratorController {
 		return new ResponseEntity<ArrayList<Administrator>>(adminService.getAllActive(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
+	@GetMapping(value = "/{username}",  produces = "application/json")
 	public ResponseEntity<Administrator> getOne(@PathVariable("username") String username, HttpServletRequest request) {
 		return new ResponseEntity<Administrator>(adminService.getOne(username), HttpStatus.OK);
 	}
