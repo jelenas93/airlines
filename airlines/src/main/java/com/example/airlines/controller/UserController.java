@@ -39,7 +39,7 @@ public class UserController {
 		return new ResponseEntity<ArrayList<User>>(userService.getAllActive(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{username}", headers = { "content-type=application/json" })
+	@GetMapping(value = "/{username}", produces = "application/json")
 	public ResponseEntity<User> getOne(@PathVariable("username") String name, HttpServletRequest request) {
 		return new ResponseEntity<User>(userService.getOne(name), HttpStatus.OK);
 	}

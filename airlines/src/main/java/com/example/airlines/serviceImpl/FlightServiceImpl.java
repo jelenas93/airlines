@@ -154,15 +154,15 @@ public class FlightServiceImpl implements FlightService {
 		return flightDAO.findAllByAirCompany_Name(name);
 	}
 
-	public ArrayList<Flight> findAllByDestination_Name(String name) {
-		return flightDAO.findAllByDestination_Name(name);
+	public ArrayList<Flight> getAllByDestination_Name(String name) {
+		return flightDAO.findAllByIsActiveAndDestination_Name(true, name);
 	}
 
 	public ArrayList<Flight> findAllByAirplane_Brand(String brand) {
 		return flightDAO.findAllByAirplane_Brand(brand);
 	}
 
-	public ArrayList<Flight> findAllByFlightDate(Date date) {
+	public ArrayList<Flight> getAllByFlightDate(Date date) {
 		return flightDAO.findAllByFlightDate(date);
 	}
 
@@ -177,4 +177,5 @@ public class FlightServiceImpl implements FlightService {
 	public ArrayList<Flight> getAllByAirCompany_Id(Long id) {
 		return (ArrayList<Flight>) flightDAO.findAllByAirCompany_Id(id);
 	}
+
 }

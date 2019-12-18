@@ -1,6 +1,7 @@
 package com.example.airlines.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,11 +41,11 @@ public class FlightController {
 		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/{name}", produces = "application/json")
-	public ResponseEntity<ArrayList<Flight>> getAllByAircomanyName(@PathVariable("name") String name, HttpServletRequest request) {
-		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllByAirCompany_Name(name), HttpStatus.OK);
+	@GetMapping(value = "/destination/{name}", produces = "application/json")
+	public ResponseEntity<ArrayList<Flight>> getAllByDestinationName(@PathVariable("name") String name, HttpServletRequest request) {
+		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllByDestination_Name(name), HttpStatus.OK);
 	}
-
+	
 	@GetMapping(path = "/aktivni", produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAllActive(HttpServletRequest request) {
 		return new ResponseEntity<ArrayList<Flight>>(flightService.getAllActive(), HttpStatus.OK);

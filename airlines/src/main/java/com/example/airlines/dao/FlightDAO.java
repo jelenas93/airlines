@@ -11,7 +11,7 @@ public interface FlightDAO extends CrudRepository<Flight, Long> {
 	
 	public ArrayList<Flight> findAllByAirCompany_Name(String name);
 	
-	public ArrayList<Flight> findAllByDestination_Name(String name);
+	public ArrayList<Flight> findAllByIsActiveAndDestination_Name(Boolean bool, String name);
 	
 	public ArrayList<Flight> findAllByAirplane_Brand(String brand);
 	
@@ -24,4 +24,5 @@ public interface FlightDAO extends CrudRepository<Flight, Long> {
 	public ArrayList<Flight> findAllByIsActive(Boolean bool);
 	
 	public ArrayList<Flight> findAllByAirCompany_Id(Long id);
+
 }

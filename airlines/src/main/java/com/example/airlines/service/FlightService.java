@@ -1,6 +1,7 @@
 package com.example.airlines.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 //import org.springframework.stereotype.Service;
 
@@ -23,5 +24,9 @@ public interface FlightService {
 	public ArrayList<Flight> getAllByAirCompany_Name(String name);
 	
 	public ArrayList<Flight> getAllByAirCompany_Id(Long id);
-
+	
+	public ArrayList<Flight> getAllByDestination_Name(String name);
+	
+	public ArrayList<Flight> getAllByFlightDate(Date date); 
+	
 }
