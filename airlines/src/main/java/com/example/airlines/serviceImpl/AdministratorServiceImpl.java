@@ -99,8 +99,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public String edit(Administrator object) {
-		if (object.getUsername() == null || "".equals(object.getUsername()) || object.getPassword() == null
-				|| "".equals(object.getPassword()) || object.getAirCompany() == null) {
+		if (object.getUsername() == null || "".equals(object.getUsername()) || object.getAirCompany() == null) {
 			return "Greska, podaci nisu uneseni.";
 		}
 
@@ -113,8 +112,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 		if (admin == null) {
 			return "Greska, korisnik sa datim username-om ne postoji.";
 		}
-
-		admin.setPassword(object.getPassword());
+   if(object.getPassword() != null
+			|| !("".equals(object.getPassword()))) {
+		admin.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
+   }else {
+	   admin.setPassword(admin.getPassword());
+   }
 		admin.setAirCompany(airCompany);
 		admin.setActive(object.getActive());
 		try {
