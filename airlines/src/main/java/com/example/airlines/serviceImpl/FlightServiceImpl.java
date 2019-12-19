@@ -89,7 +89,7 @@ public class FlightServiceImpl implements FlightService {
 		if (airCompany == null) {
 			return "Greska, ne postoji unesena avio kompanija.";
 		}
-		if(recObj.getFlightDate().before(new Date())) {
+		if (recObj.getFlightDate().before(new Date())) {
 			return "Greska, datum je prosao.";
 		}
 		// kad kreiram let valjda mjesta nisu rezervisana, vec tek kad se karte kupuju
@@ -129,6 +129,9 @@ public class FlightServiceImpl implements FlightService {
 		Optional<Flight> flight = flightDAO.findById(recObj.getId());
 		if (flight.get() == null) {
 			return "Greska, ne postoji dati let.";
+		}
+		if (recObj.getFlightDate().before(new Date())) {
+			return "Greska, datum je prosao.";
 		}
 
 		int brojMogucihMjesta = airplane.get().getSeats();
@@ -177,6 +180,7 @@ public class FlightServiceImpl implements FlightService {
 	public ArrayList<Flight> getAllActive() {
 		return (ArrayList<Flight>) flightDAO.findAllByIsActive(true);
 	}
+
 	public ArrayList<Flight> getAllByAirCompany_Id(Long id) {
 		return (ArrayList<Flight>) flightDAO.findAllByAirCompany_Id(id);
 	}
