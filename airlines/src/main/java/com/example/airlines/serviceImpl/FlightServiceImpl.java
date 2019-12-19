@@ -89,6 +89,9 @@ public class FlightServiceImpl implements FlightService {
 		if (airCompany == null) {
 			return "Greska, ne postoji unesena avio kompanija.";
 		}
+		if(recObj.getFlightDate().before(new Date())) {
+			return "Greska, datum je prosao.";
+		}
 		// kad kreiram let valjda mjesta nisu rezervisana, vec tek kad se karte kupuju
 		// mjesta se popunjavaju
 		Flight flight = new Flight(airplane.get(), 0, destination, airCompany, recObj.getFlightDate(),
