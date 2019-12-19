@@ -22,16 +22,17 @@ import com.example.airlines.service.AdministratorService;
 public class AdministratorServiceImpl implements AdministratorService {
 
 	private AdministratorDAO adminDAO;
-	
+
 	private AirCompanyDAO airCompanyDAO;
-	
+
 	private SupervizorDAO supervizorDAO;
-	
+
 	private UserDAO userDAO;
-	
+
 	private RoleDAO roleDAO;
-	
+
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	@Autowired
 	public AdministratorServiceImpl(AdministratorDAO adminDAO, AirCompanyDAO airCompanyDAO, SupervizorDAO supervizorDAO,
 			UserDAO userDAO, com.example.airlines.dao.RoleDAO roleDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -71,12 +72,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, podaci nisu uneseni.";
 		}
 		AirCompany aircompany = airCompanyDAO.findOneByName(object.getAirCompany().getName());
-		
-		//da username bude jedinstveno
+
+		// da username bude jedinstveno
 		User user = userDAO.findOneByUsername(object.getUsername());
-		Administrator admin=adminDAO.findOneByUsername(object.getUsername());
-		Supervizor supervizor=supervizorDAO.findOneByUsername(object.getUsername());
-		
+		Administrator admin = adminDAO.findOneByUsername(object.getUsername());
+		Supervizor supervizor = supervizorDAO.findOneByUsername(object.getUsername());
+
 		if (aircompany == null) {
 			return "Greska, ne postoji unesena avio kompanuja.";
 		}
@@ -84,7 +85,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Greska, korisnik sa datim username-om vec postoji.";
 		}
 
-		admin = new Administrator(object.getUsername(), bCryptPasswordEncoder.encode(object.getPassword()), aircompany, true);
+		admin = new Administrator(object.getUsername(), bCryptPasswordEncoder.encode(object.getPassword()), aircompany,
+				true);
 		Role userRole = roleDAO.findByRole("ADMINISTRATOR");
 		admin.setRole(userRole);
 		try {
@@ -99,7 +101,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public String edit(Administrator object) {
-		if (object.getUsername() == null || "".equals(object.getUsername()) || object.getAirCompany() == null) {
+		if (object.getUsername() == null || "".equals(object.getUsername()) || object.getAirCompany() == null
+				|| object.getPassword() == null || "".equals(object.getPassword())) {
 			return "Greska, podaci nisu uneseni.";
 		}
 
@@ -112,12 +115,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 		if (admin == null) {
 			return "Greska, korisnik sa datim username-om ne postoji.";
 		}
-   if(object.getPassword() != null
-			|| !("".equals(object.getPassword()))) {
 		admin.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
-   }else {
-	   admin.setPassword(admin.getPassword());
-   }
 		admin.setAirCompany(airCompany);
 		admin.setActive(object.getActive());
 		try {
